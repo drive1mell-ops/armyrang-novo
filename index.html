@@ -599,3 +599,205 @@
       animation: modal-heart-beat 2s ease-in-out infinite;
       }
     
+    .modal-btn-share {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.9rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+      color: #fff;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      user-select: none;
+      margin-bottom: 0.65rem;
+    }
+
+    .modal-btn-share:active {
+      transform: scale(0.97);
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.2);
+    }
+
+    .modal-btn-share.copied {
+      background: linear-gradient(135deg, #059669, #10b981);
+      box-shadow: 0 6px 20px rgba(5, 150, 105, 0.3);
+    }
+
+    .modal-btn-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.9rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+      color: #7c3aed;
+      background: transparent;
+      border: 1.5px solid rgba(124, 58, 237, 0.35);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .modal-btn-group:active {
+      background: rgba(124, 58, 237, 0.07);
+      transform: scale(0.97);
+    }
+
+    .modal-social-label {
+      margin-top: 1.4rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    .modal-social-icons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.85rem;
+    }
+
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f0ff;
+      border: 1.5px solid #ede9fe;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .social-btn:hover {
+      background: #ede9fe;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+    }
+
+    .social-btn:active {
+      transform: scale(0.93);
+      background: #ddd6fe;
+    }
+
+    .social-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #7c3aed;
+    }
+
+    /* ── Option pill selectors ───────────────────────────────── */
+    .option-section {
+      margin-bottom: 1.15rem;
+    }
+
+    .option-section-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .option-section-top label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #374151;
+    }
+
+    .optional-badge {
+      font-size: 0.67rem;
+      font-weight: 600;
+      color: #a78bfa;
+      background: #f3eeff;
+      border-radius: 999px;
+      padding: 0.15rem 0.55rem;
+      letter-spacing: 0.03em;
+    }
+
+    .option-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .option-pill {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: #6b7280;
+      background: #f2f2f7;
+      border: 1.5px solid transparent;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+      user-select: none;
+    }
+
+    .option-pill:active {
+      transform: scale(0.95);
+    }
+
+    .option-pill.selected {
+      background: #f3eeff;
+      color: #7c3aed;
+      border-color: #c4b5fd;
+      font-weight: 700;
+    }
+
+    .option-divider {
+      height: 1px;
+      background: #f0edf8;
+      margin: 1.15rem 0;
+    }
+
+    .form-error {
+      display: none;
+    }
+
+    .form-group input.invalid {
+      /* input stays visually identical to its normal state */
+    }
+
+    .field-error {
+      display: none;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #B00000;
+    }
+
+    .field-error::before {
+      content: '›';
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #a78bfa;
+      flex-shrink: 0;
+    }
+
+    .field-error.visible {
+      display: flex;
+      }
+    
+    
