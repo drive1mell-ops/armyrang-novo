@@ -800,4 +800,201 @@
       display: flex;
       }
     
+    /* Safe area padding for modern phones */
+    @supports (padding: env(safe-area-inset-bottom)) {
+      .splash-content,
+      .second-content {
+        padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Splash Screen ──────────────────────────────────────── -->
+  <div id="splash" class="screen">
+
+    <p class="splash-top-label">Armyrang</p>
+
+    <div class="splash-content">
+
+      <h1 class="splash-title">
+        <span class="brazil-word">Brazil</span><br>
+        Needs More<br>
+        BTS Concert<br>
+        Dates
+      </h1>
+
+      <p class="splash-subtitle">Milhares de fãs ficaram sem ingresso.</p>
+
+      <p class="splash-supporting">Assine e ajude a mostrar a força da ARMY brasileiro</p>
+
+      <button class="btn-primary" id="cta-btn">ASSINAR AGORA</button>
+
+      <p class="counter-text" id="counter-text">
+        <span class="live-dot"></span>
+        <span id="counter-label">O movimento começa com você 💜</span>
+      </p>
+
+    </div>
+  </div>
+
+  <!-- ── Second Screen ──────────────────────────────────────── -->
+  <div id="second" class="screen hidden">
+    <div class="second-content">
+
+      <!-- Hero -->
+      <div class="hero-section">
+        <h1 class="hero-title">Queremos BTS<br>no Brasil</h1>
+        <p class="hero-subtitle">Mostre que o Brasil precisa de mais datas de shows. Assine e faça parte do movimento.</p>
+      </div>
+
+      <!-- Progress card -->
+      <div class="progress-card">
+        <p class="sig-label">Assinaturas Arrecadadas</p>
+        <div class="sig-count" id="sig-count">0</div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="progress-meta">
+          <span id="progress-pct"><span id="progress-pct-num">0%</span><span id="progress-suffix" style="display:none"> • Estamos quase lá! <span class="inline-heart">♥</span></span></span>
+          <span>Meta: 150.000</span>
+        </div>
+      </div>
+
+      <!-- Form card -->
+      <div class="form-card">
+
+        <div class="form-card-header">
+          <div class="form-card-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+            </svg>
+          </div>
+          <span class="form-card-title">Faça parte</span>
+        </div>
+
+        <div class="form-group">
+          <label for="input-name">Nome</label>
+          <input type="text" id="input-name" placeholder="Ex: Maria Eduarda Silva" autocomplete="name" novalidate />
+          <p class="field-error" id="error-name">Por favor, informe seu nome completo.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="estado">Estado</label>
+          <select id="estado" class="form-select" onchange="carregarCidades()">
+            <option value="" disabled selected>Selecione o estado</option>
+            <option value="AC">Acre - AC</option>
+            <option value="AL">Alagoas - AL</option>
+            <option value="AP">Amapá - AP</option>
+            <option value="AM">Amazonas - AM</option>
+            <option value="BA">Bahia - BA</option>
+            <option value="CE">Ceará - CE</option>
+            <option value="DF">Distrito Federal - DF</option>
+            <option value="ES">Espírito Santo - ES</option>
+            <option value="GO">Goiás - GO</option>
+            <option value="MA">Maranhão - MA</option>
+            <option value="MT">Mato Grosso - MT</option>
+            <option value="MS">Mato Grosso do Sul - MS</option>
+            <option value="MG">Minas Gerais - MG</option>
+            <option value="PA">Pará - PA</option>
+            <option value="PB">Paraíba - PB</option>
+            <option value="PR">Paraná - PR</option>
+            <option value="PE">Pernambuco - PE</option>
+            <option value="PI">Piauí - PI</option>
+            <option value="RJ">Rio de Janeiro - RJ</option>
+            <option value="RN">Rio Grande do Norte - RN</option>
+            <option value="RS">Rio Grande do Sul - RS</option>
+            <option value="RO">Rondônia - RO</option>
+            <option value="RR">Roraima - RR</option>
+            <option value="SC">Santa Catarina - SC</option>
+            <option value="SP">São Paulo - SP</option>
+            <option value="SE">Sergipe - SE</option>
+            <option value="TO">Tocantins - TO</option>
+          </select>
+          <p class="field-error" id="error-state">Selecione seu estado.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="cidade">Cidade</label>
+          <select id="cidade" class="form-select placeholder" disabled>
+            <option value="" disabled selected>Selecione a cidade</option>
+          </select>
+          <p class="field-error" id="error-city">Por favor, informe sua cidade.</p>
+        </div>
+
+        <div class="option-divider"></div>
+
+        <!-- Faixa etária -->
+        <div class="option-section">
+          <div class="option-section-top">
+            <label>Faixa Etária</label>
+            <span class="optional-badge">Opcional</span>
+          </div>
+          <div class="option-pills" id="pills-faixa">
+            <button type="button" class="option-pill" data-value="13-17">13–17</button>
+            <button type="button" class="option-pill" data-value="18-29">18–29</button>
+            <button type="button" class="option-pill" data-value="30-39">30–39</button>
+            <button type="button" class="option-pill" data-value="40+">40+</button>
+          </div>
+        </div>
+
+        <!-- Setor pretendido -->
+        <div class="option-section">
+          <div class="option-section-top">
+            <label>Setor</label>
+            <span class="optional-badge">Opcional</span>
+          </div>
+          <div class="option-pills" id="pills-setor">
+            <button type="button" class="option-pill" data-value="Arquibancada">Arquibancada</button>
+            <button type="button" class="option-pill" data-value="Cadeira Superior">Cadeira Superior</button>
+            <button type="button" class="option-pill" data-value="Cadeira Inferior">Cadeira Inferior</button>
+            <button type="button" class="option-pill" data-value="Pista">Pista</button>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="btn-submit" id="submit-btn">Assinar Petição →</button>
+
+      <p class="form-error" id="form-error"></p>
+
+      <p class="form-privacy">Seus dados estão seguros e serão usados apenas para fins de contagem oficial.</p>
+
+    </div>
+  </div>
+
+  <!-- ── Success Modal ──────────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-box">
+
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+
+      <h3 class="modal-title">Parabéns!</h3>
+      <p class="modal-text">Você é a assinatura nº <strong id="modal-num">0</strong> <span class="modal-heart">♥</span></p>
+      <p class="modal-text modal-text-share">Compartilhe e traga mais ARMYS para o movimento Armyrang!</p>
+
+      <button class="modal-btn-share" id="modal-share-btn">Compartilhar</button>
+      <a class="modal-btn-group" id="modal-group-btn" href="https://t.me/ARMYRANGBRASIL" target="_blank" rel="noopener">Entrar no grupo</a>
+
+      <p class="modal-social-label">Siga-nos nas redes sociais</p>
+
+      <div class="modal-social-icons">
+
+        <!-- Instagram -->
+        <a class="social-btn" href="https://www.instagram.com/armyrang.br?igsh=MTUxN2NjMHMzZ2YwdQ==" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.333 3.608 1.308.975.975 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.333 2.633-1.308 3.608-.975.975-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.333-3.608-1.308-.975-.975-1.246-2.242-1.308-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.333-2.633 1.308-3.608C4.516 2.496 5.783 2.225 7.15 2.163 8.416 2.105 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.014 7.052.072 5.197.157 3.355.673 1.999 2.029.643 3.385.127 5.227.042 7.082-.014 8.362 0 8.771 0 12c0 3.229.014 3.638.072 4.918.085 1.855.601 3.697 1.957 5.053 1.356 1.356 3.198 1.872 5.053 1.957C8.362 23.986 8.771 24 12 24s3.638-.014 4.918-.072c1.855-.085 3.697-.601 5.053-1.957 1.356-1.356 1.872-3.198 1.957-5.053.058-1.28.072-1.689.072-4.918 0-3.229-.014-3.638-.072-4.918-.085-1.855-.601-3.697-1.957-5.053C20.615.673 18.773.157 16.918.072 15.638.014 15.229 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+          </svg>
+        </a>
+
+        <!-- TikTok -->
+        <a class="social-btn" href="https://www.tiktok.com/@armyrang.br?_r=1&_t=ZS-95a7xr5dwQR" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
     
