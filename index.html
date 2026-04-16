@@ -997,4 +997,263 @@
         <a class="social-btn" href="https://www.tiktok.com/@armyrang.br?_r=1&_t=ZS-95a7xr5dwQR" target="_blank" rel="noopener" aria-label="TikTok">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
             <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
-    
+              </svg>
+        </a>
+
+        <!-- Twitter / X -->
+        <a class="social-btn" href="https://x.com/Armyrang284011" target="_blank" rel="noopener" aria-label="Twitter / X">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L2.25 2.25h6.922l4.256 5.625 4.816-5.625zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const GOAL = 150000;
+
+    // ── Single source of truth ────────────────────────────────
+    let valorAtualAssinaturas = 0;
+
+    const splash = document.getElementById('splash');
+    const second = document.getElementById('second');
+
+    function formatNum(n) {
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function formatarNumeroBR(n) {
+      return formatNum(Math.round(n));
+    }
+
+    // ── DOM refs (cached once — no per-frame lookups) ─────────
+    const elContador    = document.getElementById('sig-count');
+    const elBarra       = document.getElementById('progress-fill');
+    const elPorcentagem = document.getElementById('progress-pct-num');
+    const elSufixo      = document.getElementById('progress-suffix');
+
+    // ── Easing ────────────────────────────────────────────────
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    // ── UI update — ALL three elements, same interpolated value ─
+    function atualizarUI(valor) {
+      const v   = Math.round(valor);
+      const pct = Math.min((valor / GOAL) * 100, 100);
+      elContador.textContent    = formatarNumeroBR(v);
+      elBarra.style.width       = pct.toFixed(1) + '%';
+      elPorcentagem.textContent = v > 0 ? pct.toFixed(1) + '%' : '0%';
+      elSufixo.style.display    = v > 0 ? '' : 'none';
+    }
+
+    // ── Master animation engine ───────────────────────────────
+    function animarMetricas(valorAtual, novoValor, duracao) {
+      const start = performance.now();
+      function step(now) {
+        const elapsed  = now - start;
+        const progress = Math.min(elapsed / duracao, 1);
+        const current  = valorAtual + (novoValor - valorAtual) * easeOutCubic(progress);
+        atualizarUI(current);
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          atualizarUI(novoValor);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function updateCounter() {
+      atualizarUI(valorAtualAssinaturas);
+    }
+
+
+    // ── Initialise single source of truth ─────────────────────
+    valorAtualAssinaturas = 0;
+    updateCounter();
+
+    let introPlayed = false;
+    document.getElementById('cta-btn').addEventListener('click', () => {
+      splash.classList.add('hidden');
+      second.classList.remove('hidden');
+      if (!introPlayed) {
+        introPlayed = true;
+        const from = Math.max(0, valorAtualAssinaturas - 60);
+        animarMetricas(from, valorAtualAssinaturas, 1500);
+      }
+    });
+
+    const modalOverlay = document.getElementById('modal-overlay');
+
+    function openModal(total) {
+      if (total) {
+        document.getElementById('modal-num').textContent = total.toLocaleString('pt-BR');
+      }
+      modalOverlay.classList.add('visible');
+    }
+
+    // ── Pill selection logic ──────────────────────────────────
+    function setupPillGroup(groupId) {
+      const group = document.getElementById(groupId);
+      group.querySelectorAll('.option-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          const isSelected = pill.classList.contains('selected');
+          group.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
+          if (!isSelected) pill.classList.add('selected');
+        });
+      });
+    }
+
+    function getSelectedPill(groupId) {
+      const selected = document.querySelector('#' + groupId + ' .option-pill.selected');
+      return selected ? selected.dataset.value : '';
+    }
+
+    setupPillGroup('pills-faixa');
+    setupPillGroup('pills-setor');
+
+    // ── Cities by state ───────────────────────────────────────
+    const cidadesPorEstado = {
+      AC: ['Cruzeiro do Sul','Feijó','Ji-Paraná','Rio Branco','Sena Madureira','Tarauacá'],
+      AL: ['Arapiraca','Maceió','Palmeira dos Índios','Penedo','Rio Largo','União dos Palmares'],
+      AP: ['Laranjal do Jari','Macapá','Oiapoque','Santana'],
+      AM: ['Itacoatiara','Manacapuru','Manaus','Parintins','Tabatinga','Tefé'],
+      BA: ['Barreiras','Camaçari','Cruz das Almas','Feira de Santana','Ilhéus','Itabuna','Juazeiro','Lauro de Freitas','Porto Seguro','Salvador','Vitória da Conquista'],
+      CE: ['Caucaia','Crato','Fortaleza','Juazeiro do Norte','Maracanaú','Pacatuba','Sobral'],
+      DF: ['Brasília','Ceilândia','Gama','Planaltina','Samambaia','Taguatinga'],
+      ES: ['Cachoeiro de Itapemirim','Cariacica','Colatina','Guarapari','Linhares','Serra','Vila Velha','Vitória'],
+      GO: ['Anápolis','Aparecida de Goiânia','Catalão','Goiânia','Luziânia','Rio Verde','Valparaíso de Goiás'],
+      MA: ['Açailândia','Bacabal','Caxias','Imperatriz','Paço do Lumiar','São Luís','Timon'],
+      MT: ['Cuiabá','Rondonópolis','Sinop','Tangará da Serra','Várzea Grande'],
+      MS: ['Campo Grande','Corumbá','Dourados','Três Lagoas'],
+      MG: ['Belo Horizonte','Betim','Contagem','Governador Valadares','Ipatinga','Juiz de Fora','Montes Claros','Ribeirão das Neves','Uberaba','Uberlândia'],
+      PA: ['Ananindeua','Belém','Castanhal','Marabá','Parauapebas','Santarém'],
+      PB: ['Bayeux','Campina Grande','João Pessoa','Santa Rita','Sousa'],
+      PR: ['Cascavel','Colombo','Curitiba','Foz do Iguaçu','Guarapuava','Londrina','Maringá','Ponta Grossa','São José dos Pinhais'],
+      PE: ['Caruaru','Jaboatão dos Guararapes','Olinda','Paulista','Petrolina','Recife','Vitória de Santo Antão'],
+      PI: ['Parnaíba','Picos','Teresina'],
+      RJ: ['Belford Roxo','Campos dos Goytacazes','Duque de Caxias','Macaé','Niterói','Nova Iguaçu','Petrópolis','Rio de Janeiro','São Gonçalo','Volta Redonda'],
+      RN: ['Caicó','Mossoró','Natal','Parnamirim','São Gonçalo do Amarante'],
+      RS: ['Canoas','Caxias do Sul','Gravataí','Novo Hamburgo','Pelotas','Porto Alegre','Santa Maria'],
+      RO: ['Ariquemes','Ji-Paraná','Porto Velho','Vilhena'],
+      RR: ['Boa Vista','Rorainópolis'],
+      SC: ['Balneário Camboriú','Blumenau','Chapecó','Criciúma','Florianópolis','Joinville','São José'],
+      SP: ['Bauru','Campinas','Guarulhos','Mogi das Cruzes','Osasco','Ribeirão Preto','Santo André','Santos','São Bernardo do Campo','São José dos Campos','São Paulo','Sorocaba'],
+      SE: ['Aracaju','Lagarto','Nossa Senhora do Socorro','São Cristóvão'],
+      TO: ['Araguaína','Gurupi','Palmas'],
+    };
+
+    function syncPlaceholder(sel) {
+      sel.value === '' ? sel.classList.add('placeholder') : sel.classList.remove('placeholder');
+    }
+
+    function carregarCidades() {
+      const estadoSelect = document.getElementById('estado');
+      const cidadeSelect = document.getElementById('cidade');
+      const estado       = estadoSelect.value;
+
+      syncPlaceholder(estadoSelect);
+
+      cidadeSelect.innerHTML = '<option value="" disabled selected>Selecione a cidade</option>';
+      cidadeSelect.classList.add('placeholder');
+
+      if (!estado) {
+        cidadeSelect.disabled = true;
+        return;
+      }
+
+      const cidades = cidadesPorEstado[estado] || [];
+      cidades.forEach(cidade => {
+        const option = document.createElement('option');
+        option.value = cidade;
+        option.textContent = cidade;
+        cidadeSelect.appendChild(option);
+      });
+
+      cidadeSelect.disabled = false;
+    }
+
+    document.getElementById('cidade').addEventListener('change', function () {
+      syncPlaceholder(this);
+    });
+
+    // initialise placeholder state on page load
+    syncPlaceholder(document.getElementById('estado'));
+
+    // ── Submit ────────────────────────────────────────────────
+    document.getElementById('submit-btn').addEventListener('click', () => {
+      const nameInput   = document.getElementById('input-name');
+      const cidadeSelect = document.getElementById('cidade');
+      const estadoSelect = document.getElementById('estado');
+
+      const name  = nameInput.value.trim();
+      const city  = cidadeSelect.value.trim();
+      const state = estadoSelect.value.trim();
+
+      nameInput.classList.remove('invalid');
+      cidadeSelect.classList.remove('invalid');
+      estadoSelect.classList.remove('invalid');
+      document.getElementById('error-name').classList.remove('visible');
+      document.getElementById('error-city').classList.remove('visible');
+      document.getElementById('error-state').classList.remove('visible');
+
+      let valid = true;
+      if (!name)  { nameInput.classList.add('invalid');   document.getElementById('error-name').classList.add('visible');  valid = false; }
+      if (!city)  { cidadeSelect.classList.add('invalid'); document.getElementById('error-city').classList.add('visible');  valid = false; }
+      if (!state) { estadoSelect.classList.add('invalid'); document.getElementById('error-state').classList.add('visible'); valid = false; }
+      if (!valid) return;
+
+      const faixa_etaria = getSelectedPill('pills-faixa');
+      const setor        = getSelectedPill('pills-setor');
+
+      const btn = document.getElementById('submit-btn');
+      btn.disabled       = true;
+      btn.style.opacity  = '0.6';
+
+      const valorAnterior = valorAtualAssinaturas;
+      valorAtualAssinaturas += 1;
+
+      animarMetricas(valorAnterior, valorAtualAssinaturas, 700);
+      setTimeout(() => openModal(valorAtualAssinaturas), 750);
+
+      setTimeout(() => {
+        btn.disabled      = false;
+        btn.style.opacity = '';
+      }, 700);
+    });
+
+    document.getElementById('modal-share-btn').addEventListener('click', async () => {
+      const btn    = document.getElementById('modal-share-btn');
+      const numero = document.getElementById('modal-num').textContent;
+
+      const mensagem = `Eu sou a assinatura nº ${numero} do Armyrang 💜\nO Brasil quer mais datas!\nClique no link e assine você também!`;
+      const url      = 'https://armyrang.com.br';
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'Armyrang', text: mensagem, url });
+        } catch (e) {
+          // user cancelled — do nothing
+        }
+      } else {
+        try {
+          await navigator.clipboard.writeText(mensagem + '\n' + url);
+          btn.textContent = 'Link copiado! Compartilhe com seus amigos 💜';
+          btn.classList.add('copied');
+          setTimeout(() => {
+            btn.textContent = 'Compartilhar';
+            btn.classList.remove('copied');
+          }, 3000);
+        } catch (e) {
+          btn.textContent = 'Erro ao copiar';
+        }
+      }
+    });
+  </script>
+
+</body>
+  </html>
