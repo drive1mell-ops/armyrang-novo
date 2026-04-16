@@ -1061,6 +1061,16 @@
   </div>
 
   <script>
+    window.addEventListener("load", function () {
+  history.replaceState({ tela: "splash" }, "", "");
+});
+    window.onpopstate = function (event) {
+  if (!event.state || event.state.tela === "splash") {
+    document.getElementById("splash").style.display = "flex";
+    document.getElementById("formulario").style.display = "none";
+  }
+};
+    
     const GOAL = 150000;
 
     // ── Single source of truth ────────────────────────────────
