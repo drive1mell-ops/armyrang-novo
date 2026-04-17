@@ -1376,10 +1376,10 @@ const { data, error } = await supabase
 
   if (!valid) return;
 
-  enviarFormulario();
-
   btn.disabled = true;
   btn.style.opacity = '0.6';
+
+  enviarFormulario();
 
   setTimeout(() => {
     btn.disabled = false;
