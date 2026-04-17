@@ -1177,16 +1177,7 @@
     valorAtualAssinaturas = 0;
     updateCounter();
 
-    let introPlayed = false;
-    document.getElementById('cta-btn').addEventListener('click', () => {
-      splash.classList.add('hidden');
-      second.classList.remove('hidden');
-      if (!introPlayed) {
-        introPlayed = true;
-        const from = Math.max(0, valorAtualAssinaturas - 60);
-        animarMetricas(from, valorAtualAssinaturas, 1500);
-      }
-    });
+    
 
     const modalOverlay = document.getElementById('modal-overlay');
 
