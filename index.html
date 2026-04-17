@@ -883,10 +883,7 @@
 
       <p class="splash-supporting">Assine e ajude a mostrar a força da ARMY brasileiro</p>
 
-<button class="btn-primary" onclick="
-  document.getElementById('splash').classList.add('hidden');
-  document.getElementById('second').classList.remove('hidden');
-">
+<button class="btn-primary" onclick="irParaFormulario()">
   ASSINAR
 </button>
 
@@ -1102,15 +1099,17 @@
 
     async function enviarFormulario() {
   const dados = {
-    nome: document.querySelector("#nome").value,
-    email: document.querySelector("#email").value,
+    nome: document.querySelector("#input-name").value,
     estado: document.querySelector("#estado").value,
     cidade: document.querySelector("#cidade").value,
-    faixa: document.querySelector("#idade").value,
-    setor: document.querySelector("#setor").value,
+    faixa_etaria: getSelectedPill('pills-faixa'),
+    setor: getSelectedPill('pills-setor'),
   };
 
-  const resultado = await salvarAssinatura(dados);
+  console.log(dados);
+    }
+
+  
 
   if (!resultado) return;
 
@@ -1314,7 +1313,10 @@
       const faixa_etaria = getSelectedPill('pills-faixa');
       const setor        = getSelectedPill('pills-setor');
 
-      const btn = document.getElementById('submit-btn');
+      const btn = document.getElementById('submit-btn').addEventListener('click', () => {
+  
+  enviarFormulario();
+});
       btn.disabled       = true;
       btn.style.opacity  = '0.6';
 
