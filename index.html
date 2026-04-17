@@ -1076,18 +1076,16 @@
     window.addEventListener("load", function () {
   history.replaceState({ tela: "splash" }, "", "");
 });
-    window.onpopstate = function (event) {
-  if (!event.state || event.state.tela === "splash") {
-    document.getElementById("splash").style.display = "flex";
-    document.getElementById("second").style.display = "none";
-  }
+    window.onpopstate = function () {
+  document.getElementById("splash").classList.remove("hidden");
+  document.getElementById("second").classList.add("hidden");
 };
     
     const GOAL = 150000;
 
     function irParaFormulario() {
-  document.getElementById("splash").style.display = "none";
-  document.getElementById("second").style.display = "flex";
+  document.getElementById("splash").classList.add("hidden");
+  document.getElementById("second").classList.remove("hidden");
 
   history.pushState({ tela: "formulario" }, "", "#formulario");
     }
