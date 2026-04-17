@@ -1174,11 +1174,15 @@ const { data, error } = await supabase
   }
       
   // 💜 pegar número da assinatura (ID)
-  const numero = data[0].id;
-  
-  // 🚀 abrir modal com número
-  openModal(numero);
-  }
+if (!data || data.length === 0) {
+  mostrarToast("Falha na conexão. Tente novamente.");
+  return;
+}
+
+const numero = data[0].id;
+
+// 🚀 abrir modal com número
+openModal(numero);
     
   
     // ── Single source of truth ────────────────────────────────
