@@ -883,7 +883,12 @@
 
       <p class="splash-supporting">Assine e ajude a mostrar a força da ARMY brasileiro</p>
 
-      <button class="btn-primary" id="cta-btn">ASSINAR AGORA</button>
+<button class="btn-primary" onclick="
+  document.getElementById('splash').classList.add('hidden');
+  document.getElementById('second').classList.remove('hidden');
+">
+  ASSINAR
+</button>
 
       <p class="counter-text" id="counter-text">
         <span class="live-dot"></span>
