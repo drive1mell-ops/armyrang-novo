@@ -1060,6 +1060,8 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <script>
     window.addEventListener("load", function () {
   history.replaceState({ tela: "splash" }, "", "");
@@ -1072,6 +1074,10 @@
 };
     
     const GOAL = 150000;
+    const supabase = window.supabase.createClient(
+  "https://veyofebdepbaczmbipqt.supabase.co",
+  sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o
+);
 
     // ── Single source of truth ────────────────────────────────
     let valorAtualAssinaturas = 0;
