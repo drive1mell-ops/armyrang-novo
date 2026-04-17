@@ -1159,12 +1159,19 @@ const { data, error } = await supabase
 
   if (error) {
   if (error.code === "23505") {
+
     mostrarToast("💜 Você já faz parte do movimento! Sua assinatura já está registrada.");
+
+    const emailInput = document.getElementById('input-email');
+    emailInput.classList.add('invalid');
+    document.getElementById('error-email').textContent = "E-mail já registrado";
+    document.getElementById('error-email').classList.add('visible');
+
   } else {
     mostrarToast("Erro ao enviar. Tente novamente.");
   }
   return;
-}
+  }
       
   // 💜 pegar número da assinatura (ID)
   const numero = data[0].id;
@@ -1342,18 +1349,23 @@ const { data, error } = await supabase
       const estadoSelect = document.getElementById('estado');
 
       const name  = nameInput.value.trim();
+      const email = emailInput.value.trim();
       const city  = cidadeSelect.value.trim();
       const state = estadoSelect.value.trim();
 
       nameInput.classList.remove('invalid');
+      emailInput.classList.remove('invalid');
       cidadeSelect.classList.remove('invalid');
       estadoSelect.classList.remove('invalid');
+      
       document.getElementById('error-name').classList.remove('visible');
+      document.getElementById('error-email').classList.remove('visible');
       document.getElementById('error-city').classList.remove('visible');
       document.getElementById('error-state').classList.remove('visible');
 
       let valid = true;
       if (!name)  { nameInput.classList.add('invalid');   document.getElementById('error-name').classList.add('visible');  valid = false; }
+      if (!email) { nameInput.classList.add('invalid');   document.getElementById('error-name').classList.add('visible');  valid = false; }
       if (!city)  { cidadeSelect.classList.add('invalid'); document.getElementById('error-city').classList.add('visible');  valid = false; }
       if (!state) { estadoSelect.classList.add('invalid'); document.getElementById('error-state').classList.add('visible'); valid = false; }
       if (!valid) return;
