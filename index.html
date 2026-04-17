@@ -1004,7 +1004,9 @@
 
       </div>
 
-      <button class="btn-submit" id="submit-btn">Assinar Petição →</button>
+      <button class="btn-submit" id="submit-btn" onclick="enviarFormulario()">
+  Assinar Petição →
+      </button>
 
       <p class="form-error" id="form-error"></p>
 
@@ -1074,11 +1076,31 @@
 };
     
     const GOAL = 150000;
+  
     const supabase = window.supabase.createClient(
   "https://veyofebdepbaczmbipqt.supabase.co",
   sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o
 );
 
+    async function enviarFormulario() {
+  const dados = {
+    nome: document.querySelector("#nome").value,
+    email: document.querySelector("#email").value,
+    estado: document.querySelector("#estado").value,
+    cidade: document.querySelector("#cidade").value,
+    faixa: document.querySelector("#idade").value,
+    setor: document.querySelector("#setor").value,
+  };
+
+  const resultado = await salvarAssinatura(dados);
+
+  if (!resultado) return;
+
+  const numero = resultado.id;
+
+  // 💜 MOSTRAR NÚMERO
+  alert(`Você é a assinatura nº ${numero}`);
+    }
     // ── Single source of truth ────────────────────────────────
     let valorAtualAssinaturas = 0;
 
