@@ -1104,11 +1104,28 @@
     setor: getSelectedPill('pills-setor'),
   };
 
+// 🔥 salvar no Supabase
+const { data, error } = await supabase
+    .from('assinaturas')
+    .insert([dados])
+    .select();
+
+  if (error) {
+    console.error(error);
+    alert("Erro ao enviar. Tente novamente.");
+    return;
+  }
+      
+  // 💜 pegar número da assinatura (ID)
+  const numero = data[0].id;
+  
+  // 🚀 abrir modal com número
+  openModal(numero);
+  }
+
   console.log(dados);
     }
-
-  
-
+    
   if (!resultado) return;
 
   const numero = resultado.id;
@@ -1182,7 +1199,7 @@
     const modalOverlay = document.getElementById('modal-overlay');
 
     function openModal(total) {
-      if (total) {
+      if (typeof total === "number") {
         document.getElementById('modal-num').textContent = total.toLocaleString('pt-BR');
       }
       modalOverlay.classList.add('visible');
@@ -1323,7 +1340,7 @@
 
     document.getElementById('modal-share-btn').addEventListener('click', async () => {
       const btn    = document.getElementById('modal-share-btn');
-      const numero = document.getElementById('modal-num').textContent;
+      const numero = Number(document.getElementById('modal-num').textContent);
 
       const mensagem = `*Hey, ARMY! 💜*\nEu sou a assinatura nº ${numero.toLocaleString("pt-BR")} do Armyrang\nO Brasil precisa de mais datas de shows!\nAssine você também!👇
       const url      = 'https://armyrang.com.br';
