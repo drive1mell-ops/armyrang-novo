@@ -1343,58 +1343,56 @@ const { data, error } = await supabase
 
     // ── Submit ────────────────────────────────────────────────
     document.getElementById('submit-btn').addEventListener('click', () => {
-      const nameInput   = document.getElementById('input-name');
-      const emailInput = document.getElementById('input-email');
-      const cidadeSelect = document.getElementById('cidade');
-      const estadoSelect = document.getElementById('estado');
 
-      const name  = nameInput.value.trim();
-      const email = emailInput.value.trim();
-      const city  = cidadeSelect.value.trim();
-      const state = estadoSelect.value.trim();
+  const btn = document.getElementById('submit-btn');
 
-      nameInput.classList.remove('invalid');
-      emailInput.classList.remove('invalid');
-      cidadeSelect.classList.remove('invalid');
-      estadoSelect.classList.remove('invalid');
-      
-      document.getElementById('error-name').classList.remove('visible');
-      document.getElementById('error-email').classList.remove('visible');
-      document.getElementById('error-city').classList.remove('visible');
-      document.getElementById('error-state').classList.remove('visible');
+  const nameInput   = document.getElementById('input-name');
+  const emailInput  = document.getElementById('input-email');
+  const cidadeSelect = document.getElementById('cidade');
+  const estadoSelect = document.getElementById('estado');
 
-      let valid = true;
-      if (!name)  { nameInput.classList.add('invalid');   document.getElementById('error-name').classList.add('visible');  valid = false; }
-      if (!email) { nameInput.classList.add('invalid');   document.getElementById('error-name').classList.add('visible');  valid = false; }
-      if (!city)  { cidadeSelect.classList.add('invalid'); document.getElementById('error-city').classList.add('visible');  valid = false; }
-      if (!state) { estadoSelect.classList.add('invalid'); document.getElementById('error-state').classList.add('visible'); valid = false; }
-      if (!valid) return;
+  const name  = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const city  = cidadeSelect.value.trim();
+  const state = estadoSelect.value.trim();
 
-      const faixa_etaria = getSelectedPill('pills-faixa');
-      const setor        = getSelectedPill('pills-setor');
+  nameInput.classList.remove('invalid');
+  emailInput.classList.remove('invalid');
+  cidadeSelect.classList.remove('invalid');
+  estadoSelect.classList.remove('invalid');
   
+  document.getElementById('error-name').classList.remove('visible');
+  document.getElementById('error-email').classList.remove('visible');
+  document.getElementById('error-city').classList.remove('visible');
+  document.getElementById('error-state').classList.remove('visible');
+
+  let valid = true;
+
+  if (!name)  { nameInput.classList.add('invalid');   document.getElementById('error-name').classList.add('visible');  valid = false; }
+  if (!email) { emailInput.classList.add('invalid');  document.getElementById('error-email').classList.add('visible'); valid = false; }
+  if (!city)  { cidadeSelect.classList.add('invalid'); document.getElementById('error-city').classList.add('visible');  valid = false; }
+  if (!state) { estadoSelect.classList.add('invalid'); document.getElementById('error-state').classList.add('visible'); valid = false; }
+
+  if (!valid) return;
+
   enviarFormulario();
+
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.style.opacity = '';
+  }, 700);
+
 });
-      btn.disabled       = true;
-      btn.style.opacity  = '0.6';
-
-      const valorAnterior = valorAtualAssinaturas;
-      valorAtualAssinaturas += 1;
-
-      animarMetricas(valorAnterior, valorAtualAssinaturas, 700);
-      setTimeout(() => openModal(valorAtualAssinaturas), 750);
-
-      setTimeout(() => {
-        btn.disabled      = false;
-        btn.style.opacity = '';
-      }, 700);
-    });
 
     document.getElementById('modal-share-btn').addEventListener('click', async () => {
       const btn    = document.getElementById('modal-share-btn');
       const numero = Number(document.getElementById('modal-num').textContent);
 
-      const mensagem = `*Hey, ARMY! 💜*\nEu sou a assinatura nº ${numero.toLocaleString("pt-BR")} do Armyrang\nO Brasil precisa de mais datas de shows!\nAssine você também!👇
+      const mensagem = `*Hey, ARMY! 💜*\nEu sou a assinatura nº ${numero.toLocaleString("pt-BR")} do Armyrang\nO Brasil precisa de mais datas de shows!\nAssine você também!👇`
+      
       const url      = 'https://armyrang.com.br';
 
       if (navigator.share) {
