@@ -1082,11 +1082,18 @@
     window.onpopstate = function (event) {
   if (!event.state || event.state.tela === "splash") {
     document.getElementById("splash").style.display = "flex";
-    document.getElementById("formulario").style.display = "none";
+    document.getElementById("second").style.display = "none";
   }
 };
     
     const GOAL = 150000;
+
+    function irParaFormulario() {
+  document.getElementById("splash").style.display = "none";
+  document.getElementById("second").style.display = "flex";
+
+  history.pushState({ tela: "formulario" }, "", "#formulario");
+    }
   
     const supabase = window.supabase.createClient(
   "https://veyofebdepbaczmbipqt.supabase.co",
