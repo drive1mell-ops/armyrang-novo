@@ -1321,7 +1321,7 @@ openModal(numero);
       sel.value === '' ? sel.classList.add('placeholder') : sel.classList.remove('placeholder');
     }
 
-    function carregarCidades() {
+    window.carregarCidades = function () {
       const estadoSelect = document.getElementById('estado');
       const cidadeSelect = document.getElementById('cidade');
       const estado       = estadoSelect.value;
