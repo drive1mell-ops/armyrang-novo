@@ -1353,7 +1353,8 @@ openModal(numero);
     });
 
     // initialise placeholder state on page load
-    syncPlaceholder(document.getElementById('estado'));
+    const estadoEl = document.getElementById('estado');
+if (estadoEl) syncPlaceholder(estadoEl);
 
     // ── Submit ────────────────────────────────────────────────
     document.getElementById('submit-btn').addEventListener('click', () => {
