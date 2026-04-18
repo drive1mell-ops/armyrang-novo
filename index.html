@@ -1175,16 +1175,97 @@ const { data, error } = await supabase
   }
       
   // 💜 pegar número da assinatura (ID)
-if (!data || data.length === 0) {
-  mostrarToast("Falha na conexão. Tente novamente.");
-  return;
+const GOAL = 150000;
+
+// 🔵 pode ficar fora
+const supabase = window.supabase.createClient(
+  "https://veyofebdepbaczmbipqt.supabase.co",
+  "sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o"
+);
+
+// 🔵 função mantida (sem alteração de lógica)
+function irParaFormulario() {
+  const splash = document.getElementById("splash");
+  const second = document.getElementById("second");
+
+  if (splash && second) {
+    splash.classList.add("hidden");
+    second.classList.remove("hidden");
+
+    history.pushState({ tela: "formulario" }, "", "#formulario");
+  }
 }
 
-const numero = data[0].id;
+// 🔵 toast com proteção
+function mostrarToast(mensagem) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
 
-// 🚀 abrir modal com número
-openModal(numero);
-}   
+  toast.textContent = mensagem;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+// 🔵 envio com proteção completa
+async function enviarFormulario() {
+
+  const nomeInput   = document.querySelector("#input-name");
+  const emailInput  = document.querySelector("#input-email");
+  const estadoInput = document.querySelector("#estado");
+  const cidadeInput = document.querySelector("#cidade");
+
+  if (!nomeInput || !emailInput || !estadoInput || !cidadeInput) {
+    console.error("Campos não encontrados");
+    return;
+  }
+
+  const dados = {
+    nome: nomeInput.value,
+    email: emailInput.value,
+    estado: estadoInput.value,
+    cidade: cidadeInput.value,
+    faixa_etaria: getSelectedPill('pills-faixa'),
+    setor: getSelectedPill('pills-setor'),
+  };
+
+  const { data, error } = await supabase
+    .from('assinaturas')
+    .insert([dados])
+    .select();
+
+  if (error) {
+    if (error.code === "23505") {
+
+      mostrarToast("💜 Você já faz parte do movimento! Sua assinatura já está registrada.");
+
+      emailInput.classList.add('invalid');
+
+      const errorEmail = document.getElementById('error-email');
+      if (errorEmail) {
+        errorEmail.textContent = "E-mail já registrado";
+        errorEmail.classList.add('visible');
+      }
+
+    } else {
+      mostrarToast("Erro ao enviar. Tente novamente.");
+    }
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    mostrarToast("Falha na conexão. Tente novamente.");
+    return;
+  }
+
+  const numero = data[0].id;
+
+  if (typeof openModal === "function") {
+    openModal(numero);
+  }
+}
     
   
     // ── Single source of truth ────────────────────────────────
