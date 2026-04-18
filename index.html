@@ -1120,6 +1120,10 @@ function getSelectedPill(groupId) {
   return selected ? selected.dataset.value : '';
 }
 
+function emailValido(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+  
 function setupPillGroup(groupId) {
   document.addEventListener('click', function (e) {
     const pill = e.target.closest(`#${groupId} .option-pill`);
@@ -1246,8 +1250,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const elSufixo      = document.getElementById('progress-suffix');
   const modalOverlay  = document.getElementById('modal-overlay');
 
-  const estadoSelect = document.getElementById('estado');
-  const cidadeSelect = document.getElementById('cidade');
+  const estadoSelect  = document.getElementById('estado');
+  const cidadeSelect  = document.getElementById('cidade');
+  
+  const emailInput    = document.getElementById("input-email");
+  const errorEmail    = document.getElementById("error-email");
+
+  emailInput.addEventListener("blur", function () {
+  const email = emailInput.value.trim();
+
+  emailInput.classList.remove("invalid");
+  errorEmail.classList.remove("visible");
+
+  if (!email || !emailValido(email)) {
+    emailInput.classList.add("invalid");
+    errorEmail.textContent = "Adicione um email válido.";
+    errorEmail.classList.add("visible");
+  }
+});
 
   const refs = { elContador, elBarra, elPorcentagem, elSufixo };
 
