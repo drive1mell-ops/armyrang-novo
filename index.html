@@ -1343,6 +1343,8 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // 🔥 cidade funcionando corretamente
+  if (estadoSelect && cidadeSelect) {
+
   estadoSelect.addEventListener('change', function () {
 
     const estado = estadoSelect.value;
@@ -1367,8 +1369,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     cidadeSelect.disabled = false;
+
   });
 
+  }
+  
   document.getElementById('cidade').addEventListener('change', function () {
     syncPlaceholder(this);
   });
