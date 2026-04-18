@@ -975,7 +975,7 @@
 
         <div class="form-group">
           <label for="estado">Estado</label>
-          <select id="estado" class="form-select" onchange="carregarCidades()">
+          <select id="estado" class="form-select">
             <option value="" disabled selected>Selecione o estado</option>
             <option value="AC">Acre - AC</option>
             <option value="AL">Alagoas - AL</option>
@@ -1314,7 +1314,7 @@ function setupPillGroup(groupId) {
     
 // 🔴 ÚNICO DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function () {
-  alert("PASSOU DO DOM");
+  
 
   const elContador    = document.getElementById('sig-count');
   const elBarra       = document.getElementById('progress-fill');
@@ -1323,9 +1323,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalOverlay  = document.getElementById('modal-overlay');
 
   const estadoSelect = document.getElementById('estado');
-  alert("estado: " + estadoSelect);
   const cidadeSelect = document.getElementById('cidade');
-  alert("cidade: " + cidadeSelect);
   
   setupPillGroup('pills-faixa');
   setupPillGroup('pills-setor');
