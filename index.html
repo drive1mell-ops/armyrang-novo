@@ -1322,6 +1322,7 @@ openModal(numero);
     }
 
     window.carregarCidades = function () {
+      console.log("cidadesPorEstado:", cidadesPorEstado);
       const estadoSelect = document.getElementById('estado');
       const cidadeSelect = document.getElementById('cidade');
       const estado       = estadoSelect.value;
