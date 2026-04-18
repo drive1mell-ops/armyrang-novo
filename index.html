@@ -1292,6 +1292,21 @@ function syncPlaceholder(sel) {
   sel.value === '' ? sel.classList.add('placeholder') : sel.classList.remove('placeholder');
 }
 
+function setupPillGroup(groupId) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+
+  group.querySelectorAll('.option-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const isSelected = pill.classList.contains('selected');
+
+      group.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
+
+      if (!isSelected) pill.classList.add('selected');
+    });
+  });
+}
+    
 // 🔴 ÚNICO DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -1303,6 +1318,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const estadoSelect = document.getElementById('estado');
   const cidadeSelect = document.getElementById('cidade');
+  setupPillGroup('pills-faixa');
+  setupPillGroup('pills-setor');
 
   const refs = { elContador, elBarra, elPorcentagem, elSufixo };
 
