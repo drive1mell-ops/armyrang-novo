@@ -1314,33 +1314,68 @@ document.addEventListener("DOMContentLoaded", function () {
   const estadoEl = document.getElementById('estado');
   if (estadoEl) syncPlaceholder(estadoEl);
 
+
   document.getElementById('submit-btn').addEventListener('click', async () => {
 
-    const dados = {
-      nome: document.getElementById("input-name").value,
-      email: document.getElementById("input-email").value,
-      estado: estadoSelect.value,
-      cidade: cidadeSelect.value,
-      faixa_etaria: getSelectedPill('pills-faixa'),
-      setor: getSelectedPill('pills-setor')
-    };
+  const nomeInput   = document.getElementById("input-name");
+  const emailInput  = document.getElementById("input-email");
+  const errorEmail  = document.getElementById("error-email");
 
-    const { data, error } = await supabase
-      .from('assinaturas')
-      .insert([dados])
-      .select();
+  const nome   = nomeInput.value.trim();
+  const email  = emailInput.value.trim();
+  const estado = estadoSelect.value;
+  const cidade = cidadeSelect.value;
 
-    if (error) {
-      if (error.code === "23505") {
-        mostrarToast("💜 Você já faz parte do movimento! Sua assinatura já está registrada.");
-      } else {
-        mostrarToast("Erro ao enviar. Tente novamente.");
-      }
-      return;
+  // reset visual
+  emailInput.classList.remove("invalid");
+  errorEmail.classList.remove("visible");
+
+  // 🔴 valida email
+  if (!email || !emailValido(email)) {
+    emailInput.classList.add("invalid");
+    errorEmail.textContent = "Adicione um email válido.";
+    errorEmail.classList.add("visible");
+    return;
+  }
+
+  // valida restantes
+  if (!nome || !estado || !cidade) {
+    mostrarToast("Preencha todos os campos.");
+    return;
+  }
+
+  const dados = {
+    nome,
+    email,
+    estado,
+    cidade,
+    faixa_etaria: getSelectedPill('pills-faixa'),
+    setor: getSelectedPill('pills-setor')
+  };
+
+  const { data, error } = await supabase
+    .from('assinaturas')
+    .insert([dados])
+    .select();
+
+  if (error) {
+    if (error.code === "23505") {
+
+      emailInput.classList.add("invalid");
+      errorEmail.textContent = "E-mail já registrado";
+      errorEmail.classList.add("visible");
+
+      mostrarToast("💜 Você já faz parte do movimento!");
+    } else {
+      mostrarToast("Erro ao enviar. Tente novamente.");
     }
+    return;
+  }
 
-    openModal(data[0].id);
-  });
+  openModal(data[0].id);
+});
+
+    
 
   document.getElementById('modal-share-btn').addEventListener('click', async () => {
     const btn    = document.getElementById('modal-share-btn');
