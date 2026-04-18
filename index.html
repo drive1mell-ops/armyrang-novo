@@ -1276,8 +1276,10 @@ openModal(numero);
     }
 
   
-    setupPillGroup('pills-faixa');
-    setupPillGroup('pills-setor');
+    setTimeout(() => {
+  setupPillGroup('pills-faixa');
+  setupPillGroup('pills-setor');
+}, 100);
 
     // ── Cities by state ───────────────────────────────────────
     const cidadesPorEstado = {
