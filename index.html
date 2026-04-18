@@ -1318,9 +1318,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const estadoSelect = document.getElementById('estado');
   const cidadeSelect = document.getElementById('cidade');
+  
+  setTimeout(() => {
   setupPillGroup('pills-faixa');
   setupPillGroup('pills-setor');
-
+}, 0);
+  
   const refs = { elContador, elBarra, elPorcentagem, elSufixo };
 
   valorAtualAssinaturas = 0;
