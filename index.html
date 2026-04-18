@@ -1117,64 +1117,7 @@
  // document.getElementById("second").classList.add("hidden");
 //};
     
-    const GOAL = 150000;
-
-    function irParaFormulario() {
-  document.getElementById("splash").classList.add("hidden");
-  document.getElementById("second").classList.remove("hidden");
-
-  history.pushState({ tela: "formulario" }, "", "#formulario");
-    }
-  
-    const supabase = window.supabase.createClient(
-  "https://veyofebdepbaczmbipqt.supabase.co",
-  "sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o"
-);
-
-  function mostrarToast(mensagem) {
-  const toast = document.getElementById("toast");
-  toast.textContent = mensagem;
-
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000);
-    }
     
-    async function enviarFormulario() {
-  const dados = {
-    nome: document.querySelector("#input-name").value,
-    email: document.querySelector("#input-email").value,
-    estado: document.querySelector("#estado").value,
-    cidade: document.querySelector("#cidade").value,
-    faixa_etaria: getSelectedPill('pills-faixa'),
-    setor: getSelectedPill('pills-setor'),
-  };
-
-// 🔥 salvar no Supabase
-const { data, error } = await supabase
-    .from('assinaturas')
-    .insert([dados])
-    .select();
-
-  if (error) {
-  if (error.code === "23505") {
-
-    mostrarToast("💜 Você já faz parte do movimento! Sua assinatura já está registrada.");
-
-    const emailInput = document.getElementById('input-email');
-    emailInput.classList.add('invalid');
-    document.getElementById('error-email').textContent = "E-mail já registrado";
-    document.getElementById('error-email').classList.add('visible');
-
-  } else {
-    mostrarToast("Erro ao enviar. Tente novamente.");
-  }
-  return;
-  }
-      
-  // 💜 pegar número da assinatura (ID)
 const GOAL = 150000;
 
 // 🔵 pode ficar fora
@@ -1266,100 +1209,123 @@ async function enviarFormulario() {
     openModal(numero);
   }
 }
+
     
-  
-    // ── Single source of truth ────────────────────────────────
-    let valorAtualAssinaturas = 0;
+// ── Single source of truth ────────────────────────────────
+let valorAtualAssinaturas = 0;
 
-    function formatNum(n) {
-      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    }
+// 🔵 funções podem ficar fora
+function formatNum(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
 
-    function formatarNumeroBR(n) {
-      return formatNum(Math.round(n));
-    }
+function formatarNumeroBR(n) {
+  return formatNum(Math.round(n));
+}
 
-    // ── DOM refs (cached once — no per-frame lookups) ─────────
-    const elContador    = document.getElementById('sig-count');
-    const elBarra       = document.getElementById('progress-fill');
-    const elPorcentagem = document.getElementById('progress-pct-num');
-    const elSufixo      = document.getElementById('progress-suffix');
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
 
-    // ── Easing ────────────────────────────────────────────────
-    function easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3);
-    }
+function atualizarUI(valor, refs) {
+  if (!refs) return;
 
-    // ── UI update — ALL three elements, same interpolated value ─
-    function atualizarUI(valor) {
-      const v   = Math.round(valor);
-      const pct = Math.min((valor / GOAL) * 100, 100);
-      elContador.textContent    = formatarNumeroBR(v);
-      elBarra.style.width       = pct.toFixed(1) + '%';
-      elPorcentagem.textContent = v > 0 ? pct.toFixed(1) + '%' : '0%';
-      elSufixo.style.display    = v > 0 ? '' : 'none';
-    }
+  const { elContador, elBarra, elPorcentagem, elSufixo } = refs;
 
-    // ── Master animation engine ───────────────────────────────
-    function animarMetricas(valorAtual, novoValor, duracao) {
-      const start = performance.now();
-      function step(now) {
-        const elapsed  = now - start;
-        const progress = Math.min(elapsed / duracao, 1);
-        const current  = valorAtual + (novoValor - valorAtual) * easeOutCubic(progress);
-        atualizarUI(current);
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        } else {
-          atualizarUI(novoValor);
-        }
-      }
+  const v   = Math.round(valor);
+  const pct = Math.min((valor / GOAL) * 100, 100);
+
+  if (elContador)    elContador.textContent    = formatarNumeroBR(v);
+  if (elBarra)       elBarra.style.width       = pct.toFixed(1) + '%';
+  if (elPorcentagem) elPorcentagem.textContent = v > 0 ? pct.toFixed(1) + '%' : '0%';
+  if (elSufixo)      elSufixo.style.display    = v > 0 ? '' : 'none';
+}
+
+function animarMetricas(valorAtual, novoValor, duracao, refs) {
+  const start = performance.now();
+
+  function step(now) {
+    const elapsed  = now - start;
+    const progress = Math.min(elapsed / duracao, 1);
+    const current  = valorAtual + (novoValor - valorAtual) * easeOutCubic(progress);
+
+    atualizarUI(current, refs);
+
+    if (progress < 1) {
       requestAnimationFrame(step);
+    } else {
+      atualizarUI(novoValor, refs);
     }
+  }
 
-    function updateCounter() {
-      atualizarUI(valorAtualAssinaturas);
-    }
+  requestAnimationFrame(step);
+}
 
+function updateCounter(refs) {
+  atualizarUI(valorAtualAssinaturas, refs);
+}
 
-    // ── Initialise single source of truth ─────────────────────
-    valorAtualAssinaturas = 0;
-    updateCounter();
+// 🔴 TUDO que acessa DOM fica aqui
+document.addEventListener("DOMContentLoaded", function () {
 
-    
+  const elContador    = document.getElementById('sig-count');
+  const elBarra       = document.getElementById('progress-fill');
+  const elPorcentagem = document.getElementById('progress-pct-num');
+  const elSufixo      = document.getElementById('progress-suffix');
 
-    const modalOverlay = document.getElementById('modal-overlay');
+  const modalOverlay  = document.getElementById('modal-overlay');
 
-    function openModal(total) {
-      if (typeof total === "number") {
-        document.getElementById('modal-num').textContent = total.toLocaleString('pt-BR');
+  const refs = {
+    elContador,
+    elBarra,
+    elPorcentagem,
+    elSufixo
+  };
+
+  // inicializar contador
+  valorAtualAssinaturas = 0;
+  updateCounter(refs);
+
+  // modal
+  window.openModal = function (total) {
+    if (typeof total === "number") {
+      const modalNum = document.getElementById('modal-num');
+      if (modalNum) {
+        modalNum.textContent = total.toLocaleString('pt-BR');
       }
+    }
+
+    if (modalOverlay) {
       modalOverlay.classList.add('visible');
     }
+  };
 
-    // ── Pill selection logic ──────────────────────────────────
-    function setupPillGroup(groupId) {
-      const group = document.getElementById(groupId);
-      group.querySelectorAll('.option-pill').forEach(pill => {
-        pill.addEventListener('click', () => {
-          const isSelected = pill.classList.contains('selected');
-          group.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
-          if (!isSelected) pill.classList.add('selected');
-        });
+  // pills
+  function setupPillGroup(groupId) {
+    const group = document.getElementById(groupId);
+    if (!group) return;
+
+    group.querySelectorAll('.option-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        const isSelected = pill.classList.contains('selected');
+
+        group.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
+
+        if (!isSelected) pill.classList.add('selected');
       });
-    }
+    });
+  }
 
-    function getSelectedPill(groupId) {
-      const selected = document.querySelector('#' + groupId + ' .option-pill.selected');
-      return selected ? selected.dataset.value : '';
-    }
+  window.getSelectedPill = function (groupId) {
+    const selected = document.querySelector('#' + groupId + ' .option-pill.selected');
+    return selected ? selected.dataset.value : '';
+  };
 
-  
-    setTimeout(() => {
   setupPillGroup('pills-faixa');
   setupPillGroup('pills-setor');
-}, 100);
 
+});
+    
     // ── Cities by state ───────────────────────────────────────
     const cidadesPorEstado = {
       AC: ['Cruzeiro do Sul','Feijó','Ji-Paraná','Rio Branco','Sena Madureira','Tarauacá'],
