@@ -1109,199 +1109,24 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
   </script>
   
-  <script>
-    window.onerror = function (msg, url, line) {
-  alert("ERRO: " + msg + " | linha: " + line);
-};
-    
+<script>
 
-    
-//window.addEventListener("load", function () {
-//history.replaceState({ tela: "splash" }, "", "");
-//});
-// window.onpopstate = function () {
-// document.getElementById("splash").classList.remove("hidden");
-// document.getElementById("second").classList.add("hidden");
-//};
+let supabase = null;
 
-const GOAL = 150000;
-
-const supabase = window.supabase.createClient(
-  "https://veyofebdepbaczmbipqt.supabase.co",
-  "sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o"
-);
-
-function irParaFormulario() {
-  const splash = document.getElementById("splash");
-  const second = document.getElementById("second");
-
-  if (splash && second) {
-    splash.classList.add("hidden");
-    second.classList.remove("hidden");
-    history.pushState({ tela: "formulario" }, "", "#formulario");
+try {
+  if (window.supabase) {
+    supabase = window.supabase.createClient(
+      "https://veyofebdepbaczmbipqt.supabase.co",
+      "sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o"
+    );
   }
+} catch (e) {
+  console.log("Supabase falhou, mas app continua");
 }
 
-function mostrarToast(mensagem) {
-  const toast = document.getElementById("toast");
-  if (!toast) return;
-
-  toast.textContent = mensagem;
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000);
-}
-
-    function getSelectedPill(groupId) {
+function getSelectedPill(groupId) {
   const selected = document.querySelector('#' + groupId + ' .option-pill.selected');
   return selected ? selected.dataset.value : '';
-    }
-    
-async function enviarFormulario() {
-
-  const nomeInput   = document.querySelector("#input-name");
-  const emailInput  = document.querySelector("#input-email");
-  const estadoInput = document.querySelector("#estado");
-  const cidadeInput = document.querySelector("#cidade");
-
-  if (!nomeInput || !emailInput || !estadoInput || !cidadeInput) {
-    console.error("Campos não encontrados");
-    return;
-  }
-
-  const dados = {
-    nome: nomeInput.value,
-    email: emailInput.value,
-    estado: estadoInput.value,
-    cidade: cidadeInput.value,
-    faixa_etaria: getSelectedPill('pills-faixa'),
-    setor: getSelectedPill('pills-setor'),
-  };
-
-  const { data, error } = await supabase
-    .from('assinaturas')
-    .insert([dados])
-    .select();
-
-  if (error) {
-    if (error.code === "23505") {
-
-      mostrarToast("💜 Você já faz parte do movimento! Sua assinatura já está registrada.");
-
-      emailInput.classList.add('invalid');
-
-      const errorEmail = document.getElementById('error-email');
-      if (errorEmail) {
-        errorEmail.textContent = "E-mail já registrado";
-        errorEmail.classList.add('visible');
-      }
-
-    } else {
-      mostrarToast("Erro ao enviar. Tente novamente.");
-    }
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    mostrarToast("Falha na conexão. Tente novamente.");
-    return;
-  }
-
-  const numero = data[0].id;
-
-  if (typeof openModal === "function") {
-    openModal(numero);
-  }
-}
-
-// ── Single source of truth ────────────────────────────────
-let valorAtualAssinaturas = 0;
-
-function formatNum(n) {
-  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
-
-function formatarNumeroBR(n) {
-  return formatNum(Math.round(n));
-}
-
-function easeOutCubic(t) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-function atualizarUI(valor, refs) {
-  if (!refs) return;
-
-  const { elContador, elBarra, elPorcentagem, elSufixo } = refs;
-
-  const v   = Math.round(valor);
-  const pct = Math.min((valor / GOAL) * 100, 100);
-
-  if (elContador)    elContador.textContent    = formatarNumeroBR(v);
-  if (elBarra)       elBarra.style.width       = pct.toFixed(1) + '%';
-  if (elPorcentagem) elPorcentagem.textContent = v > 0 ? pct.toFixed(1) + '%' : '0%';
-  if (elSufixo)      elSufixo.style.display    = v > 0 ? '' : 'none';
-}
-
-function animarMetricas(valorAtual, novoValor, duracao, refs) {
-  const start = performance.now();
-
-  function step(now) {
-    const elapsed  = now - start;
-    const progress = Math.min(elapsed / duracao, 1);
-    const current  = valorAtual + (novoValor - valorAtual) * easeOutCubic(progress);
-
-    atualizarUI(current, refs);
-
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    } else {
-      atualizarUI(novoValor, refs);
-    }
-  }
-
-  requestAnimationFrame(step);
-}
-
-function updateCounter(refs) {
-  atualizarUI(valorAtualAssinaturas, refs);
-}
-
-// ── Cities by state ───────────────────────────────────────
-const cidadesPorEstado = {
-  AC: ['Cruzeiro do Sul','Feijó','Ji-Paraná','Rio Branco','Sena Madureira','Tarauacá'],
-  AL: ['Arapiraca','Maceió','Palmeira dos Índios','Penedo','Rio Largo','União dos Palmares'],
-  AP: ['Laranjal do Jari','Macapá','Oiapoque','Santana'],
-  AM: ['Itacoatiara','Manacapuru','Manaus','Parintins','Tabatinga','Tefé'],
-  BA: ['Barreiras','Camaçari','Cruz das Almas','Feira de Santana','Ilhéus','Itabuna','Juazeiro','Lauro de Freitas','Porto Seguro','Salvador','Vitória da Conquista'],
-  CE: ['Caucaia','Crato','Fortaleza','Juazeiro do Norte','Maracanaú','Pacatuba','Sobral'],
-  DF: ['Brasília','Ceilândia','Gama','Planaltina','Samambaia','Taguatinga'],
-  ES: ['Cachoeiro de Itapemirim','Cariacica','Colatina','Guarapari','Linhares','Serra','Vila Velha','Vitória'],
-  GO: ['Anápolis','Aparecida de Goiânia','Catalão','Goiânia','Luziânia','Rio Verde','Valparaíso de Goiás'],
-  MA: ['Açailândia','Bacabal','Caxias','Imperatriz','Paço do Lumiar','São Luís','Timon'],
-  MT: ['Cuiabá','Rondonópolis','Sinop','Tangará da Serra','Várzea Grande'],
-  MS: ['Campo Grande','Corumbá','Dourados','Três Lagoas'],
-  MG: ['Belo Horizonte','Betim','Contagem','Governador Valadares','Ipatinga','Juiz de Fora','Montes Claros','Ribeirão das Neves','Uberaba','Uberlândia'],
-  PA: ['Ananindeua','Belém','Castanhal','Marabá','Parauapebas','Santarém'],
-  PB: ['Bayeux','Campina Grande','João Pessoa','Santa Rita','Sousa'],
-  PR: ['Cascavel','Colombo','Curitiba','Foz do Iguaçu','Guarapuava','Londrina','Maringá','Ponta Grossa','São José dos Pinhais'],
-  PE: ['Caruaru','Jaboatão dos Guararapes','Olinda','Paulista','Petrolina','Recife','Vitória de Santo Antão'],
-  PI: ['Parnaíba','Picos','Teresina'],
-  RJ: ['Belford Roxo','Campos dos Goytacazes','Duque de Caxias','Macaé','Niterói','Nova Iguaçu','Petrópolis','Rio de Janeiro','São Gonçalo','Volta Redonda'],
-  RN: ['Caicó','Mossoró','Natal','Parnamirim','São Gonçalo do Amarante'],
-  RS: ['Canoas','Caxias do Sul','Gravataí','Novo Hamburgo','Pelotas','Porto Alegre','Santa Maria'],
-  RO: ['Ariquemes','Ji-Paraná','Porto Velho','Vilhena'],
-  RR: ['Boa Vista','Rorainópolis'],
-  SC: ['Balneário Camboriú','Blumenau','Chapecó','Criciúma','Florianópolis','Joinville','São José'],
-  SP: ['Bauru','Campinas','Guarulhos','Mogi das Cruzes','Osasco','Ribeirão Preto','Santo André','Santos','São Bernardo do Campo','São José dos Campos','São Paulo','Sorocaba'],
-  SE: ['Aracaju','Lagarto','Nossa Senhora do Socorro','São Cristóvão'],
-  TO: ['Araguaína','Gurupi','Palmas'],
-};
-
-function syncPlaceholder(sel) {
-  sel.value === '' ? sel.classList.add('placeholder') : sel.classList.remove('placeholder');
 }
 
 function setupPillGroup(groupId) {
@@ -1321,42 +1146,24 @@ function setupPillGroup(groupId) {
     if (!isSelected) pill.classList.add('selected');
   });
 }
-    
-// 🔴 ÚNICO DOMContentLoaded
-document.addEventListener("DOMContentLoaded", function () {
-  
 
-  const elContador    = document.getElementById('sig-count');
-  const elBarra       = document.getElementById('progress-fill');
-  const elPorcentagem = document.getElementById('progress-pct-num');
-  const elSufixo      = document.getElementById('progress-suffix');
-  const modalOverlay  = document.getElementById('modal-overlay');
+function syncPlaceholder(sel) {
+  sel.value === '' 
+    ? sel.classList.add('placeholder') 
+    : sel.classList.remove('placeholder');
+}
+
+document.addEventListener("DOMContentLoaded", function () {
 
   const estadoSelect = document.getElementById('estado');
   const cidadeSelect = document.getElementById('cidade');
-  
+
   setupPillGroup('pills-faixa');
   setupPillGroup('pills-setor');
-  
-  const refs = { elContador, elBarra, elPorcentagem, elSufixo };
-
-  valorAtualAssinaturas = 0;
-  updateCounter(refs);
-
-  window.openModal = function (total) {
-    const modalNum = document.getElementById('modal-num');
-    if (modalNum) modalNum.textContent = total.toLocaleString('pt-BR');
-    if (modalOverlay) modalOverlay.classList.add('visible');
-  };
-
-
-  // 🔥 cidade funcionando corretamente
-  if (estadoSelect && cidadeSelect) {
 
   estadoSelect.addEventListener('change', function () {
 
     const estado = estadoSelect.value;
-
     syncPlaceholder(estadoSelect);
 
     cidadeSelect.innerHTML = '<option value="" disabled selected>Selecione a cidade</option>';
@@ -1366,6 +1173,12 @@ document.addEventListener("DOMContentLoaded", function () {
       cidadeSelect.disabled = true;
       return;
     }
+
+    const cidadesPorEstado = {
+      BA: ['Salvador','Feira de Santana','Vitória da Conquista'],
+      SP: ['São Paulo','Campinas','Santos'],
+      RJ: ['Rio de Janeiro','Niterói']
+    };
 
     const cidades = cidadesPorEstado[estado] || [];
 
@@ -1377,49 +1190,54 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     cidadeSelect.disabled = false;
-
   });
 
-  }
-  
-  document.getElementById('cidade').addEventListener('change', function () {
+  cidadeSelect.addEventListener('change', function () {
     syncPlaceholder(this);
   });
 
-  const estadoEl = document.getElementById('estado');
-  if (estadoEl) syncPlaceholder(estadoEl);
+  document.getElementById('submit-btn').addEventListener('click', async () => {
 
-  document.getElementById('submit-btn').addEventListener('click', () => {
-    enviarFormulario();
-  });
+    const nome   = document.getElementById("input-name").value;
+    const email  = document.getElementById("input-email").value;
+    const estado = estadoSelect.value;
+    const cidade = cidadeSelect.value;
 
-  document.getElementById('modal-share-btn').addEventListener('click', async () => {
-    const btn    = document.getElementById('modal-share-btn');
-    const numero = Number(document.getElementById('modal-num').textContent);
-
-    const mensagem = `*Hey, ARMY! 💜*\nEu sou a assinatura nº ${numero.toLocaleString("pt-BR")} do Armyrang\nO Brasil precisa de mais datas de shows!\nAssine você também!👇`;
-
-    const url = 'https://armyrang.com.br';
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: 'Armyrang', text: mensagem, url });
-      } catch (e) {}
-    } else {
-      try {
-        await navigator.clipboard.writeText(mensagem + '\n' + url);
-        btn.textContent = 'Link copiado!';
-        setTimeout(() => btn.textContent = 'Compartilhar', 3000);
-      } catch (e) {
-        btn.textContent = 'Erro ao copiar';
-      }
+    if (!nome || !email || !estado || !cidade) {
+      alert("Preencha todos os campos");
+      return;
     }
+
+    const dados = {
+      nome,
+      email,
+      estado,
+      cidade,
+      faixa_etaria: getSelectedPill('pills-faixa'),
+      setor: getSelectedPill('pills-setor')
+    };
+
+    if (!supabase) {
+      alert("Erro de conexão. Tente novamente.");
+      return;
+    }
+
+    const { error } = await supabase
+      .from('assinaturas')
+      .insert([dados]);
+
+    if (error) {
+      alert("Erro ao enviar");
+      return;
+    }
+
+    alert("Assinado com sucesso!");
   });
 
 });
 
-</script>
-
+  </script>
+  
 </body>
 </html>
   
