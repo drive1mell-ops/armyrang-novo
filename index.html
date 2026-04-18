@@ -1110,7 +1110,12 @@
   </script>
   
   <script>
-alert("JS OK");
+    window.onerror = function (msg, url, line) {
+  alert("ERRO: " + msg + " | linha: " + line);
+};
+    
+
+    
 //window.addEventListener("load", function () {
 //history.replaceState({ tela: "splash" }, "", "");
 //});
