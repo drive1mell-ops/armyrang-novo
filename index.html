@@ -1154,6 +1154,11 @@ function mostrarToast(mensagem) {
   }, 3000);
 }
 
+    function getSelectedPill(groupId) {
+  const selected = document.querySelector('#' + groupId + ' .option-pill.selected');
+  return selected ? selected.dataset.value : '';
+    }
+    
 async function enviarFormulario() {
 
   const nomeInput   = document.querySelector("#input-name");
@@ -1344,10 +1349,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (modalOverlay) modalOverlay.classList.add('visible');
   };
 
-  window.getSelectedPill = function (groupId) {
-    const selected = document.querySelector('#' + groupId + ' .option-pill.selected');
-    return selected ? selected.dataset.value : '';
-  };
 
   // 🔥 cidade funcionando corretamente
   if (estadoSelect && cidadeSelect) {
