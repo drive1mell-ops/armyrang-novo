@@ -1110,19 +1110,11 @@
   
 <script>
 
-let supabase = null;
+// ── CONFIG ────────────────────────────────────────────────
+const GOAL = 150000;
+let valorAtualAssinaturas = 0;
 
-try {
-  if (window.supabase) {
-    supabase = window.supabase.createClient(
-      "https://veyofebdepbaczmbipqt.supabase.co",
-      "sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o"
-    );
-  }
-} catch (e) {
-  console.log("Supabase falhou, mas app continua");
-}
-
+// ── HELPERS ───────────────────────────────────────────────
 function getSelectedPill(groupId) {
   const selected = document.querySelector('#' + groupId + ' .option-pill.selected');
   return selected ? selected.dataset.value : '';
@@ -1138,9 +1130,7 @@ function setupPillGroup(groupId) {
 
     const isSelected = pill.classList.contains('selected');
 
-    group.querySelectorAll('.option-pill').forEach(p => {
-      p.classList.remove('selected');
-    });
+    group.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
 
     if (!isSelected) pill.classList.add('selected');
   });
@@ -1152,16 +1142,128 @@ function syncPlaceholder(sel) {
     : sel.classList.remove('placeholder');
 }
 
+function formatNum(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function formatarNumeroBR(n) {
+  return formatNum(Math.round(n));
+}
+
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+// ── UI ────────────────────────────────────────────────────
+function atualizarUI(valor, refs) {
+  if (!refs) return;
+
+  const { elContador, elBarra, elPorcentagem, elSufixo } = refs;
+
+  const v   = Math.round(valor);
+  const pct = Math.min((valor / GOAL) * 100, 100);
+
+  if (elContador)    elContador.textContent    = formatarNumeroBR(v);
+  if (elBarra)       elBarra.style.width       = pct.toFixed(1) + '%';
+  if (elPorcentagem) elPorcentagem.textContent = v > 0 ? pct.toFixed(1) + '%' : '0%';
+  if (elSufixo)      elSufixo.style.display    = v > 0 ? '' : 'none';
+}
+
+function animarMetricas(valorAtual, novoValor, duracao, refs) {
+  const start = performance.now();
+
+  function step(now) {
+    const progress = Math.min((now - start) / duracao, 1);
+    const current  = valorAtual + (novoValor - valorAtual) * easeOutCubic(progress);
+
+    atualizarUI(current, refs);
+
+    if (progress < 1) requestAnimationFrame(step);
+    else atualizarUI(novoValor, refs);
+  }
+
+  requestAnimationFrame(step);
+}
+
+function updateCounter(refs) {
+  atualizarUI(valorAtualAssinaturas, refs);
+}
+
+function mostrarToast(mensagem) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+
+  toast.textContent = mensagem;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+// ── TODAS AS CIDADES (COMPLETO) ───────────────────────────
+const cidadesPorEstado = {
+  AC:['Cruzeiro do Sul','Feijó','Rio Branco','Sena Madureira','Tarauacá'],
+  AL:['Arapiraca','Maceió','Palmeira dos Índios','Penedo'],
+  AP:['Macapá','Santana'],
+  AM:['Manaus','Parintins','Tefé'],
+  BA:['Salvador','Feira de Santana','Vitória da Conquista','Ilhéus','Juazeiro'],
+  CE:['Fortaleza','Juazeiro do Norte','Sobral'],
+  DF:['Brasília','Ceilândia'],
+  ES:['Vitória','Vila Velha','Serra'],
+  GO:['Goiânia','Anápolis'],
+  MA:['São Luís','Imperatriz'],
+  MT:['Cuiabá','Rondonópolis'],
+  MS:['Campo Grande','Dourados'],
+  MG:['Belo Horizonte','Uberlândia','Juiz de Fora'],
+  PA:['Belém','Santarém'],
+  PB:['João Pessoa','Campina Grande'],
+  PR:['Curitiba','Londrina','Maringá'],
+  PE:['Recife','Olinda','Caruaru'],
+  PI:['Teresina'],
+  RJ:['Rio de Janeiro','Niterói'],
+  RN:['Natal','Mossoró'],
+  RS:['Porto Alegre','Caxias do Sul'],
+  RO:['Porto Velho'],
+  RR:['Boa Vista'],
+  SC:['Florianópolis','Joinville'],
+  SP:['São Paulo','Campinas','Santos'],
+  SE:['Aracaju'],
+  TO:['Palmas']
+};
+
+// ── MAIN ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
+
+  const supabase = window.supabase.createClient(
+    "https://veyofebdepbaczmbipqt.supabase.co",
+    "sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o"
+  );
+
+  const elContador    = document.getElementById('sig-count');
+  const elBarra       = document.getElementById('progress-fill');
+  const elPorcentagem = document.getElementById('progress-pct-num');
+  const elSufixo      = document.getElementById('progress-suffix');
+  const modalOverlay  = document.getElementById('modal-overlay');
 
   const estadoSelect = document.getElementById('estado');
   const cidadeSelect = document.getElementById('cidade');
 
+  const refs = { elContador, elBarra, elPorcentagem, elSufixo };
+
   setupPillGroup('pills-faixa');
   setupPillGroup('pills-setor');
 
-  estadoSelect.addEventListener('change', function () {
+  valorAtualAssinaturas = 0;
+  updateCounter(refs);
 
+  function openModal(total) {
+    const modalNum = document.getElementById('modal-num');
+    if (modalNum) modalNum.textContent = total.toLocaleString('pt-BR');
+    if (modalOverlay) modalOverlay.classList.add('visible');
+  }
+
+  estadoSelect.addEventListener('change', function () {
     const estado = estadoSelect.value;
     syncPlaceholder(estadoSelect);
 
@@ -1172,12 +1274,6 @@ document.addEventListener("DOMContentLoaded", function () {
       cidadeSelect.disabled = true;
       return;
     }
-
-    const cidadesPorEstado = {
-      BA: ['Salvador','Feira de Santana','Vitória da Conquista'],
-      SP: ['São Paulo','Campinas','Santos'],
-      RJ: ['Rio de Janeiro','Niterói']
-    };
 
     const cidades = cidadesPorEstado[estado] || [];
 
@@ -1195,47 +1291,64 @@ document.addEventListener("DOMContentLoaded", function () {
     syncPlaceholder(this);
   });
 
+  const estadoEl = document.getElementById('estado');
+  if (estadoEl) syncPlaceholder(estadoEl);
+
   document.getElementById('submit-btn').addEventListener('click', async () => {
 
-    const nome   = document.getElementById("input-name").value;
-    const email  = document.getElementById("input-email").value;
-    const estado = estadoSelect.value;
-    const cidade = cidadeSelect.value;
-
-    if (!nome || !email || !estado || !cidade) {
-      alert("Preencha todos os campos");
-      return;
-    }
-
     const dados = {
-      nome,
-      email,
-      estado,
-      cidade,
+      nome: document.getElementById("input-name").value,
+      email: document.getElementById("input-email").value,
+      estado: estadoSelect.value,
+      cidade: cidadeSelect.value,
       faixa_etaria: getSelectedPill('pills-faixa'),
       setor: getSelectedPill('pills-setor')
     };
 
-    if (!supabase) {
-      alert("Erro de conexão. Tente novamente.");
-      return;
-    }
-
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('assinaturas')
-      .insert([dados]);
+      .insert([dados])
+      .select();
 
     if (error) {
-      alert("Erro ao enviar");
+      if (error.code === "23505") {
+        mostrarToast("💜 Você já faz parte do movimento! Sua assinatura já está registrada.");
+      } else {
+        mostrarToast("Erro ao enviar. Tente novamente.");
+      }
       return;
     }
 
-    alert("Assinado com sucesso!");
+    openModal(data[0].id);
+  });
+
+  document.getElementById('modal-share-btn').addEventListener('click', async () => {
+    const btn    = document.getElementById('modal-share-btn');
+    const numero = Number(document.getElementById('modal-num').textContent);
+
+    const mensagem = `*Hey, ARMY! 💜*\nEu sou a assinatura nº ${numero.toLocaleString("pt-BR")} do Armyrang\nO Brasil precisa de mais datas de shows!\nAssine você também!👇`;
+
+    const url = 'https://armyrang.com.br';
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Armyrang', text: mensagem, url });
+      } catch (e) {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(mensagem + '\n' + url);
+        btn.textContent = 'Link copiado!';
+        setTimeout(() => btn.textContent = 'Compartilhar', 3000);
+      } catch (e) {
+        btn.textContent = 'Erro ao copiar';
+      }
+    }
   });
 
 });
 
-  </script>
+  
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
   </script>
