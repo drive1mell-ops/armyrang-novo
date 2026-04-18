@@ -1108,11 +1108,7 @@
   
     <script>
 
-      alert("JS CARREGOU");
-
-console.log("JS INICIOU");
-
-
+  
     //window.addEventListener("load", function () {
   //history.replaceState({ tela: "splash" }, "", "");
 //});
@@ -1193,9 +1189,6 @@ openModal(numero);
   
     // ── Single source of truth ────────────────────────────────
     let valorAtualAssinaturas = 0;
-
-    const splash = document.getElementById('splash');
-    const second = document.getElementById('second');
 
     function formatNum(n) {
       return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -1348,6 +1341,9 @@ openModal(numero);
       cidadeSelect.disabled = false;
     }
       document.addEventListener("DOMContentLoaded", function () {
+
+        const splash = document.getElementById('splash');
+    const second = document.getElementById('second');
     
 
     document.getElementById('cidade').addEventListener('change', function () {
