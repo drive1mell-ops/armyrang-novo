@@ -1293,22 +1293,26 @@ function syncPlaceholder(sel) {
 }
 
 function setupPillGroup(groupId) {
-  const group = document.getElementById(groupId);
-  if (!group) return;
+  document.addEventListener('click', function (e) {
+    const pill = e.target.closest(`#${groupId} .option-pill`);
+    if (!pill) return;
 
-  group.querySelectorAll('.option-pill').forEach(pill => {
-    pill.addEventListener('click', () => {
-      const isSelected = pill.classList.contains('selected');
+    const group = document.getElementById(groupId);
+    if (!group) return;
 
-      group.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
+    const isSelected = pill.classList.contains('selected');
 
-      if (!isSelected) pill.classList.add('selected');
+    group.querySelectorAll('.option-pill').forEach(p => {
+      p.classList.remove('selected');
     });
+
+    if (!isSelected) pill.classList.add('selected');
   });
 }
     
 // 🔴 ÚNICO DOMContentLoaded
 document.addEventListener("DOMContentLoaded", function () {
+  alert("SCRIPT RODOU");
 
   const elContador    = document.getElementById('sig-count');
   const elBarra       = document.getElementById('progress-fill');
@@ -1319,10 +1323,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const estadoSelect = document.getElementById('estado');
   const cidadeSelect = document.getElementById('cidade');
   
-  setTimeout(() => {
   setupPillGroup('pills-faixa');
   setupPillGroup('pills-setor');
-}, 0);
   
   const refs = { elContador, elBarra, elPorcentagem, elSufixo };
 
