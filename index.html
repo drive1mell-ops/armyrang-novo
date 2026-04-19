@@ -1264,6 +1264,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   estadoSelect.addEventListener('change', function () {
     const estado = estadoSelect.value;
+    listaCidades = [];
     syncPlaceholder(estadoSelect);
 
     cidadeSelect.innerHTML = '<option value="" disabled selected>Selecione a cidade</option>';
@@ -1273,6 +1274,18 @@ document.addEventListener("DOMContentLoaded", function () {
       cidadeSelect.disabled = true;
       return;
     }
+    
+    fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`)
+  .then(res => res.json())
+  .then(cidades => {
+
+    listaCidades = cidades.map(c => c.nome);
+
+    document.getElementById("cidade").disabled = false;
+  })
+  .catch(() => {
+    mostrarToast("Erro ao carregar cidades");
+  });
 
     const cidades = cidadesPorEstado[estado] || [];
 
