@@ -1481,12 +1481,15 @@ if (temErro) {
     .from('assinaturas')
     .insert([dados]);
 
-  openModal();
+  await buscarTotalAssinaturas();
+  openModal(valorAtualAssinaturas);
 
-} catch (e) {
+  } 
+    catch (e) {
   console.log(e);
-  openModal(); // mesmo com erro, continua fluxo
-}
+  openModal(valorAtualAssinaturas);
+ }
+ } 
 
   });
 function limparFormulario() {
