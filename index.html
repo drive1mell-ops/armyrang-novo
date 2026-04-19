@@ -1387,7 +1387,7 @@ function mostrarSugestoes(lista) {
     listaEl.id = "lista-cidades";
 
     // 🔥 POSIÇÃO
-    listaEl.style.position = "fixed";
+    listaEl.style.position = "absolute";
 
     // 🎨 ESTILO (com cor da paleta)
     listaEl.style.borderRadius = "12px";
@@ -1423,7 +1423,7 @@ function mostrarSugestoes(lista) {
   listaEl.style.width = largura + "px";
 
   // 🔥 POSICIONA ACIMA DO INPUT (SEM CONFLITO)
-  listaEl.style.top = (rect.top + window.scrollY - listaEl.offsetHeight - 8) + "px";
+  listaEl.style.top = (rect.top - 160) + "px";
 
   // 🔄 LIMPA LISTA
   listaEl.innerHTML = "";
