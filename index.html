@@ -1384,10 +1384,14 @@ document.getElementById("cidade").addEventListener("input", function () {
     listaEl.style.zIndex = "999";
     listaEl.style.backdropFilter = "blur(10px)";
 
-    document.getElementById("cidade").parentNode.appendChild(listaEl);
+    const cidadeInput = document.getElementById("cidade");
+
+    if (cidadeInput && cidadeInput.parentNode) {
+      cidadeInput.parentNode.appendChild(listaEl);
+    }
   }
 
-  // 🔥 posicionamento (UMA VEZ SÓ)
+  // 🔥 POSICIONAMENTO FORA DO IF (CORREÇÃO)
   listaEl.style.left = rect.left + "px";
 
   const margem = 16;
@@ -1427,7 +1431,7 @@ document.getElementById("cidade").addEventListener("input", function () {
 
     listaEl.appendChild(item);
   });
-  }
+    }
   
   async function buscarTotalAssinaturas() {
   const { count, error } = await supabase
