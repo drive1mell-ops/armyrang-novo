@@ -1440,8 +1440,16 @@ if (!cidadeSelect.value) {
   temErro = true;
 }
 
-// 🚫 PARA SE TIVER ERRO
-//if (temErro) return;
+if (temErro) {
+  mostrarToast("Preencha os campos obrigatórios corretamente");
+
+  const primeiroErro = document.querySelector(".invalid, .visible");
+  if (primeiroErro) {
+    primeiroErro.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  return;
+}
 
     const dados = {
       nome: document.getElementById("input-name").value,
