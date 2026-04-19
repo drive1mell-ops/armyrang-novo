@@ -1360,15 +1360,19 @@ document.getElementById("input-email").addEventListener("blur", () => {
 
   let listaCidades = [];
 
-document.getElementById("cidade").addEventListener("input", function () {
-  const valor = this.value.toLowerCase();
+const cidadeInput = document.getElementById("cidade");
 
-  const resultados = listaCidades.filter(cidade =>
-    cidade.toLowerCase().includes(valor)
-  ).slice(0, 10); // limita pra não ficar gigante
+if (cidadeInput) {
+  cidadeInput.addEventListener("input", function () {
+    const valor = this.value.toLowerCase();
 
- // mostrarSugestoes(resultados);
-});
+    const resultados = listaCidades.filter(cidade =>
+      cidade.toLowerCase().includes(valor)
+    ).slice(0, 10);
+
+    // mostrarSugestoes(resultados);
+  });
+}
 
   function mostrarSugestoes(lista) {
   let listaEl = document.getElementById("lista-cidades");
