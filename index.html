@@ -1295,6 +1295,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById('submit-btn').addEventListener('click', async () => {
 
+    const nomeInput   = document.getElementById("input-name");
+const emailInput  = document.getElementById("input-email");
+
+const errorName   = document.getElementById("error-name");
+const errorEmail  = document.getElementById("error-email");
+const errorEstado = document.getElementById("error-state");
+const errorCidade = document.getElementById("error-city");
+
+let temErro = false;
+
+// RESET
+[errorName, errorEmail, errorEstado, errorCidade].forEach(el => {
+  if (el) {
+    el.classList.remove("visible");
+  }
+});
+
+// NOME
+if (!nomeInput.value.trim()) {
+  errorName.classList.add("visible");
+  temErro = true;
+}
+
+// EMAIL (validação simples)
+const email = emailInput.value.trim();
+const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!email || !emailValido.test(email)) {
+  errorEmail.textContent = "Adicione um e-mail válido";
+  errorEmail.classList.add("visible");
+  temErro = true;
+}
+
+// ESTADO
+if (!estadoSelect.value) {
+  errorEstado.classList.add("visible");
+  temErro = true;
+}
+
+// CIDADE
+if (!cidadeSelect.value) {
+  errorCidade.classList.add("visible");
+  temErro = true;
+}
+
+// 🚫 PARA SE TIVER ERRO
+if (temErro) return;
+
     const dados = {
       nome: document.getElementById("input-name").value,
       email: document.getElementById("input-email").value,
