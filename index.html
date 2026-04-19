@@ -1309,6 +1309,21 @@ document.getElementById("cidade").addEventListener("change", () => {
   document.getElementById("error-city").classList.remove("visible");
 });
 
+document.getElementById("input-email").addEventListener("blur", () => {
+  const emailInput = document.getElementById("input-email");
+  const errorEmail = document.getElementById("error-email");
+
+  const email = emailInput.value.trim();
+  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!email) return; // não mostra erro se estiver vazio (submit já trata)
+
+  if (!emailValido.test(email)) {
+    errorEmail.textContent = "Adicione um e-mail válido";
+    errorEmail.classList.add("visible");
+  }
+});
+
   document.getElementById('submit-btn').addEventListener('click', async () => {
 
     const nomeInput   = document.getElementById("input-name");
