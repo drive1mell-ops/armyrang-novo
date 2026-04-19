@@ -1623,9 +1623,10 @@ function limparFormulario() {
     
 
 
-window.addEventListener("scroll", () => {
-const listaEl = document.getElementById("lista-cidades");
-if (listaEl) listaEl.remove();
+document.addEventListener("scroll", () => {
+  const listaEl = document.getElementById("lista-cidades");
+  if (listaEl) listaEl.remove();
+}, true);
 });
   
 });
