@@ -1430,8 +1430,8 @@ function mostrarSugestoes(lista) {
     });
 
     item.addEventListener("click", () => {
-      input.value = cidade;
-      listaEl.innerHTML = "";
+  input.value = cidade;
+  listaEl.remove();
     });
 
     listaEl.appendChild(item);
