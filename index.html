@@ -1367,7 +1367,7 @@ document.getElementById("cidade").addEventListener("input", function () {
     cidade.toLowerCase().includes(valor)
   ).slice(0, 10); // limita pra não ficar gigante
 
-  mostrarSugestoes(resultados);
+ // mostrarSugestoes(resultados);
 });
 
   function mostrarSugestoes(lista) {
@@ -1400,7 +1400,7 @@ const rect = input.getBoundingClientRect();
     }
   }
 
-  // 🔥 POSICIONAMENTO FORA DO IF (CORREÇÃO)
+  
   listaEl.style.left = rect.left + "px";
 
   const margem = 16;
@@ -1507,7 +1507,7 @@ if (!document.getElementById("cidade").value.trim()) {
 }
 
 if (temErro) {
-  mostrarToast("Preencha os campos obrigatórios corretamente");
+  //mostrarToast("Preencha os campos obrigatórios corretamente");
 
   const primeiroErro = document.querySelector(".visible");
   if (primeiroErro) {
