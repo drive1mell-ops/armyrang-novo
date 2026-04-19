@@ -1268,14 +1268,16 @@ document.addEventListener("DOMContentLoaded", function () {
   if (modalOverlay) {
     modalOverlay.classList.add('visible');
   }
-
+  
+    history.pushState({ tela: "modal" }, "", "#modal");
+  
   }
   estadoSelect.addEventListener('change', function () {
     const estado = estadoSelect.value;
     listaCidades = [];
     syncPlaceholder(estadoSelect);
 
-    cidadeSelect.innerHTML = '<option value="" disabled selected>Selecione a cidade</option>';
+    cidadeSelect.value = "";
     cidadeSelect.classList.add('placeholder');
 
     if (!estado) {
