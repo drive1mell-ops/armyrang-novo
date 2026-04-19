@@ -1236,6 +1236,18 @@ const cidadesPorEstado = {
 // ── MAIN ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
 
+const splash = document.getElementById("splash");
+const second = document.getElementById("second");
+  
+if (window.location.hash === "#form") {
+  if (splash && second) {
+    splash.classList.add("hidden");
+    second.classList.remove("hidden");
+    history.pushState({ tela: "form" }, "", "#form");
+    
+  }
+}
+
   const supabase = window.supabase.createClient(
     "https://veyofebdepbaczmbipqt.supabase.co",
     "sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o"
@@ -1581,18 +1593,27 @@ function limparFormulario() {
       }
     }
   });
-  window.onpopstate = function () {
+  window.onpopstate = function (event) {
   const modalOverlay = document.getElementById('modal-overlay');
+  const splash = document.getElementById("splash");
   const second = document.getElementById("second");
 
+  // 🔥 Se modal aberto → fecha modal
   if (modalOverlay && modalOverlay.classList.contains("visible")) {
     modalOverlay.classList.remove("visible");
 
-    if (second) {
-      second.classList.remove("hidden");
-    }
+    if (second) second.classList.remove("hidden");
 
     limparFormulario();
+    return;
+  }
+
+  // 🔥 Se está no form → volta pra splash
+  if (event.state && event.state.tela === "form") {
+    if (splash && second) {
+      splash.classList.remove("hidden");
+      second.classList.add("hidden");
+    }
   }
 };
 
