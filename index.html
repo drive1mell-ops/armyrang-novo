@@ -1324,6 +1324,52 @@ document.getElementById("input-email").addEventListener("blur", () => {
   }
 });
 
+  let listaCidades = [];
+
+document.getElementById("cidade").addEventListener("input", function () {
+  const valor = this.value.toLowerCase();
+
+  const resultados = listaCidades.filter(cidade =>
+    cidade.toLowerCase().includes(valor)
+  ).slice(0, 10); // limita pra não ficar gigante
+
+  mostrarSugestoes(resultados);
+});
+
+  function mostrarSugestoes(lista) {
+  let listaEl = document.getElementById("lista-cidades");
+
+  if (!listaEl) {
+    listaEl = document.createElement("div");
+    listaEl.id = "lista-cidades";
+    listaEl.style.position = "absolute";
+    listaEl.style.background = "#fff";
+    listaEl.style.width = "100%";
+    listaEl.style.maxHeight = "150px";
+    listaEl.style.overflowY = "auto";
+    listaEl.style.border = "1px solid #ccc";
+    listaEl.style.zIndex = "999";
+
+    document.getElementById("cidade").parentNode.appendChild(listaEl);
+  }
+
+  listaEl.innerHTML = "";
+
+  lista.forEach(cidade => {
+    const item = document.createElement("div");
+    item.textContent = cidade;
+    item.style.padding = "8px";
+    item.style.cursor = "pointer";
+
+    item.addEventListener("click", () => {
+      document.getElementById("cidade").value = cidade;
+      listaEl.innerHTML = "";
+    });
+
+    listaEl.appendChild(item);
+  });
+  }
+
   document.getElementById('submit-btn').addEventListener('click', async () => {
 
     const nomeInput   = document.getElementById("input-name");
