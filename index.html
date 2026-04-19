@@ -1437,7 +1437,7 @@ if (temErro) return;
       nome: document.getElementById("input-name").value,
       email: document.getElementById("input-email").value,
       estado: estadoSelect.value,
-      cidade: cidadeSelect.value,
+      cidade: document.getElementById("cidade").value,
       faixa_etaria: getSelectedPill('pills-faixa'),
       setor: getSelectedPill('pills-setor')
     };
