@@ -1444,16 +1444,19 @@ if (!cidadeSelect.value) {
       setor: getSelectedPill('pills-setor')
     };
 
-    const { data, error } = await supabase
-      .from('assinaturas')
-      .insert([dados])
-      .select();
+    try {
 
-    if (error) {
-  console.log(error); // mantém pra debug
-  openModal(); // continua o fluxo mesmo assim
-  return;
-    }
+  await supabase
+    .from('assinaturas')
+    .insert([dados]);
+
+  openModal();
+
+} catch (e) {
+  console.log(e);
+  openModal(); // mesmo com erro, continua fluxo
+}
+    
 
     openModal(data[0].id);
   });
