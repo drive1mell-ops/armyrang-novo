@@ -1107,8 +1107,7 @@
   </div>
   
 
-  
-<script>
+  <script>
 
 // ── CONFIG ────────────────────────────────────────────────
 const GOAL = 150000;
@@ -1120,10 +1119,6 @@ function getSelectedPill(groupId) {
   return selected ? selected.dataset.value : '';
 }
 
-function emailValido(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-  
 function setupPillGroup(groupId) {
   document.addEventListener('click', function (e) {
     const pill = e.target.closest(`#${groupId} .option-pill`);
@@ -1205,7 +1200,7 @@ function mostrarToast(mensagem) {
   }, 3000);
 }
 
-// ── TODAS AS CIDADES (COMPLETO) ───────────────────────────
+// ── TODAS AS CIDADES ──────────────────────────────────────
 const cidadesPorEstado = {
   AC:['Cruzeiro do Sul','Feijó','Rio Branco','Sena Madureira','Tarauacá'],
   AL:['Arapiraca','Maceió','Palmeira dos Índios','Penedo'],
@@ -1250,24 +1245,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const elSufixo      = document.getElementById('progress-suffix');
   const modalOverlay  = document.getElementById('modal-overlay');
 
-  const estadoSelect  = document.getElementById('estado');
-  const cidadeSelect  = document.getElementById('cidade');
-  
-  const emailInput    = document.getElementById("input-email");
-  const errorEmail    = document.getElementById("error-email");
-
-  emailInput.addEventListener("blur", function () {
-  const email = emailInput.value.trim();
-
-  emailInput.classList.remove("invalid");
-  errorEmail.classList.remove("visible");
-
-  if (!email || !emailValido(email)) {
-    emailInput.classList.add("invalid");
-    errorEmail.textContent = "Adicione um email válido.";
-    errorEmail.classList.add("visible");
-  }
-});
+  const estadoSelect = document.getElementById('estado');
+  const cidadeSelect = document.getElementById('cidade');
 
   const refs = { elContador, elBarra, elPorcentagem, elSufixo };
 
@@ -1314,62 +1293,29 @@ document.addEventListener("DOMContentLoaded", function () {
   const estadoEl = document.getElementById('estado');
   if (estadoEl) syncPlaceholder(estadoEl);
 
-
   document.getElementById('submit-btn').addEventListener('click', async () => {
-  await enviarFormulario();
-});
 
-  const nomeInput   = document.getElementById("input-name");
-  const emailInput  = document.getElementById("input-email");
-  const errorEmail  = document.getElementById("error-email");
+    const dados = {
+      nome: document.getElementById("input-name").value,
+      email: document.getElementById("input-email").value,
+      estado: estadoSelect.value,
+      cidade: cidadeSelect.value,
+      faixa_etaria: getSelectedPill('pills-faixa'),
+      setor: getSelectedPill('pills-setor')
+    };
 
-  const nome   = nomeInput.value.trim();
-  const email  = emailInput.value.trim();
-  const estado = estadoSelect.value;
-  const cidade = cidadeSelect.value;
+    const { data, error } = await supabase
+      .from('assinaturas')
+      .insert([dados])
+      .select();
 
-  // reset visual
-  emailInput.classList.remove("invalid");
-  errorEmail.classList.remove("visible");
+    if (error) {
+      mostrarToast("Erro ao enviar. Tente novamente.");
+      return;
+    }
 
-  // 🔴 valida email
-  if (!email || !emailValido(email)) {
-    emailInput.classList.add("invalid");
-    errorEmail.textContent = "Adicione um email válido.";
-    errorEmail.classList.add("visible");
-    return;
-  }
-
-  // valida restantes
-  if (!nome || !estado || !cidade) {
-    mostrarToast("Preencha todos os campos.");
-    return;
-  }
-
-  const dados = {
-    nome,
-    email,
-    estado,
-    cidade,
-    faixa_etaria: getSelectedPill('pills-faixa'),
-    setor: getSelectedPill('pills-setor')
-  };
-
-  const { data, error } = await supabase
-    .from('assinaturas')
-    .insert([dados])
-
-  if (error) {
-  console.log(error);
-  mostrarToast("Erro ao enviar. Tente novamente.");
-  return;
-    
- }
-  openModal();
-  
-});
-
-    
+    openModal(data[0].id);
+  });
 
   document.getElementById('modal-share-btn').addEventListener('click', async () => {
     const btn    = document.getElementById('modal-share-btn');
@@ -1395,10 +1341,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+ </script>
 
   
-</script>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
   </script>
   
