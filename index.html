@@ -1248,6 +1248,21 @@ document.addEventListener("DOMContentLoaded", function () {
     "sb_publishable_2vbxI63ZJtAjF575vk67nQ_UfvyNV0o"
   );
 
+  supabase
+  .channel('assinaturas-realtime')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'assinaturas'
+    },
+    () => {
+      buscarTotalAssinaturas(); // 👈 atualiza contador
+    }
+  )
+  .subscribe();
+
   const elContador    = document.getElementById('sig-count');
   const elBarra       = document.getElementById('progress-fill');
   const elPorcentagem = document.getElementById('progress-pct-num');
