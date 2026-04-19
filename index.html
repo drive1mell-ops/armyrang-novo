@@ -1238,16 +1238,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const splash = document.getElementById("splash");
 const second = document.getElementById("second");
-  history.pushState({ tela: "form" }, "", "#form");
   
   
 if (window.location.hash === "#form") {
-  if (splash && second) {
+if (splash && second) {
     splash.classList.add("hidden");
     second.classList.remove("hidden");
-    history.pushState({ tela: "form" }, "", "#form");
-    
   }
+
 }
 
   const supabase = window.supabase.createClient(
