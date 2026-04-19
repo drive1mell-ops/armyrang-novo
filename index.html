@@ -1235,7 +1235,6 @@ const cidadesPorEstado = {
 
 // ── MAIN ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
-}
 
   const supabase = window.supabase.createClient(
     "https://veyofebdepbaczmbipqt.supabase.co",
@@ -1262,20 +1261,19 @@ document.addEventListener("DOMContentLoaded", function () {
   buscarTotalAssinaturas();
 
   function openModal(total) {
-  const modalNum = document.getElementById('modal-num');
+    const modalNum = document.getElementById('modal-num');
 
-  if (modalNum && total) {
-    modalNum.textContent = total.toLocaleString('pt-BR');
-  }
+    if (modalNum && total) {
+      modalNum.textContent = total.toLocaleString('pt-BR');
+    }
 
-  const modalOverlay = document.getElementById('modal-overlay');
+    const modalOverlay = document.getElementById('modal-overlay');
 
-  if (modalOverlay) {
-    modalOverlay.classList.add('visible');
-  }
-  
+    if (modalOverlay) {
+      modalOverlay.classList.add('visible');
+    }
+
     history.pushState({ tela: "modal" }, "", "#modal");
-  
   }
     
   estadoSelect.addEventListener('change', function () {
