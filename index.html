@@ -1356,23 +1356,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const { data, error } = await supabase
     .from('assinaturas')
     .insert([dados])
-    .select();
 
   if (error) {
-    if (error.code === "23505") {
-
-      emailInput.classList.add("invalid");
-      errorEmail.textContent = "E-mail já registrado";
-      errorEmail.classList.add("visible");
-
-      mostrarToast("💜 Você já faz parte do movimento!");
-    } else {
-      mostrarToast("Erro ao enviar. Tente novamente.");
-    }
-    return;
-  }
-
-  openModal(data[0].id);
+  console.log(error);
+  mostrarToast("Erro ao enviar. Tente novamente.");
+  return;
+    
+ }
+  openModal();
+  
 });
 
     
