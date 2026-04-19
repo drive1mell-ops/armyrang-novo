@@ -1370,13 +1370,23 @@ if (cidadeInput) {
       cidade.toLowerCase().includes(valor)
     ).slice(0, 10);
 
-    if (resultados.length > 0) {
-      mostrarSugestoes(resultados);
-    } else {
-      const listaEl = document.getElementById("lista-cidades");
-      if (listaEl) listaEl.innerHTML = "";
-    }
-  });
+    const matchExato = listaCidades.some(cidade =>
+  cidade.toLowerCase() === valor
+);
+
+if (matchExato) {
+  const listaEl = document.getElementById("lista-cidades");
+  if (listaEl) listaEl.remove();
+  return;
+}
+
+if (resultados.length > 0) {
+  mostrarSugestoes(resultados);
+} else {
+  const listaEl = document.getElementById("lista-cidades");
+  if (listaEl) listaEl.remove();
+}
+});
 }
   
 function mostrarSugestoes(lista) {
@@ -1611,6 +1621,13 @@ function limparFormulario() {
   }
 };
     
+
+
+window.addEventListener("scroll", () => {
+const listaEl = document.getElementById("lista-cidades");
+if (listaEl) listaEl.remove();
+});
+  
 });
     
  </script>
