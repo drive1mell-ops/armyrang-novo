@@ -1257,10 +1257,18 @@ document.addEventListener("DOMContentLoaded", function () {
   updateCounter(refs);
 
   function openModal(total) {
-    const modalNum = document.getElementById('modal-num');
-    if (modalNum) modalNum.textContent = total.toLocaleString('pt-BR');
-    if (modalOverlay) modalOverlay.classList.add('visible');
+  const modalNum = document.getElementById('modal-num');
+
+  if (modalNum && total) {
+    modalNum.textContent = total.toLocaleString('pt-BR');
   }
+
+  const modalOverlay = document.getElementById('modal-overlay');
+
+  if (modalOverlay) {
+    modalOverlay.classList.add('visible');
+  }
+
 
   estadoSelect.addEventListener('change', function () {
     const estado = estadoSelect.value;
