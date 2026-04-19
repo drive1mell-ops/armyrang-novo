@@ -1423,7 +1423,7 @@ function mostrarSugestoes(lista) {
   listaEl.style.width = largura + "px";
 
   // 🔥 POSICIONA ACIMA DO INPUT (SEM CONFLITO)
-  listaEl.style.top = (rect.top - 160) + "px";
+  listaEl.style.top = (rect.top + window.scrollY - listaEl.offsetHeight - 8) + "px";
 
   // 🔄 LIMPA LISTA
   listaEl.innerHTML = "";
