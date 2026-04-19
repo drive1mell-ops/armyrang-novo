@@ -1386,46 +1386,24 @@ function mostrarSugestoes(lista) {
     listaEl = document.createElement("div");
     listaEl.id = "lista-cidades";
 
-    // 🔥 POSIÇÃO
+    // 📍 POSIÇÃO
     listaEl.style.position = "absolute";
 
-    // 🎨 ESTILO (com cor da paleta)
+    // 🎨 ESTILO
     listaEl.style.borderRadius = "12px";
     listaEl.style.boxShadow = "0 10px 30px rgba(0,0,0,0.1)";
     listaEl.style.fontSize = "14px";
     listaEl.style.background = "#fff";
     listaEl.style.maxHeight = "150px";
     listaEl.style.overflowY = "auto";
-
-    // 💜 BORDA NA COR DO APP
     listaEl.style.border = "1px solid #7c3aed";
-
     listaEl.style.zIndex = "999";
-    listaEl.style.backdropFilter = "blur(10px)";
 
-    const cidadeInput = document.getElementById("cidade");
-
-    if (cidadeInput && cidadeInput.parentNode) {
-      cidadeInput.parentNode.appendChild(listaEl);
-    }
+    // 🔥 APPEND NO BODY (ESSENCIAL)
+    document.body.appendChild(listaEl);
   }
 
-  // 📍 POSICIONAMENTO (CORRIGIDO)
-  listaEl.style.left = rect.left + "px";
-
-  const margem = 16;
-  let largura = rect.width;
-
-  if (rect.left + largura > window.innerWidth - margem) {
-    largura = window.innerWidth - rect.left - margem;
-  }
-
-  listaEl.style.width = largura + "px";
-
-  // 🔥 POSICIONA ACIMA DO INPUT (SEM CONFLITO)
-  listaEl.style.top = (rect.top - 160) + "px";
-
-  // 🔄 LIMPA LISTA
+  // 🔄 LIMPA ANTES DE RENDERIZAR
   listaEl.innerHTML = "";
 
   // 🧠 RENDERIZA ITENS
@@ -1438,7 +1416,7 @@ function mostrarSugestoes(lista) {
     item.style.cursor = "pointer";
 
     item.addEventListener("touchstart", () => {
-      item.style.background = "#f3f0ff"; // lilás leve
+      item.style.background = "#f3f0ff";
     });
 
     item.addEventListener("touchend", () => {
@@ -1446,15 +1424,33 @@ function mostrarSugestoes(lista) {
     });
 
     item.addEventListener("click", () => {
-      document.getElementById("cidade").value = cidade;
+      input.value = cidade;
       listaEl.innerHTML = "";
     });
 
     listaEl.appendChild(item);
   });
+
+  // 📍 POSICIONAMENTO CORRETO (DEPOIS DE RENDERIZAR)
+  const margem = 16;
+
+  let largura = rect.width;
+  let left = rect.left + window.scrollX;
+
+  if (left + largura > window.innerWidth - margem) {
+    largura = window.innerWidth - left - margem;
+  }
+
+  listaEl.style.width = largura + "px";
+  listaEl.style.left = left + "px";
+
+  // 🔥 POSICIONA EXATAMENTE ACIMA DO INPUT
+  listaEl.style.top =
+
+    rect.top + window.scrollY - listaEl.offsetHeight - 6 + "px";
+});
 }
-  
-  
+
   async function buscarTotalAssinaturas() {
   const { count, error } = await supabase
     .from('assinaturas')
@@ -1555,6 +1551,7 @@ if (temErro) {
  } 
 
 });
+    
 function limparFormulario() {
 
   document.getElementById("input-name").value = "";
