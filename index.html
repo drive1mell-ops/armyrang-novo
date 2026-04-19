@@ -1256,6 +1256,8 @@ document.addEventListener("DOMContentLoaded", function () {
   valorAtualAssinaturas = 0;
   updateCounter(refs);
 
+  buscarTotalAssinaturas();
+
   function openModal(total) {
   const modalNum = document.getElementById('modal-num');
 
@@ -1393,6 +1395,17 @@ document.getElementById("cidade").addEventListener("input", function () {
   });
   }
 
+  async function buscarTotalAssinaturas() {
+  const { count, error } = await supabase
+    .from('assinaturas')
+    .select('*', { count: 'exact', head: true });
+
+  if (!error && typeof count === "number") {
+    valorAtualAssinaturas = count;
+    updateCounter(refs);
+  }
+  }
+  
   document.getElementById('submit-btn').addEventListener('click', async () => {
     
     
