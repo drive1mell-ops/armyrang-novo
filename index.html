@@ -1373,27 +1373,33 @@ if (cidadeInput) {
      mostrarSugestoes(resultados);
   });
 }
-
-  function mostrarSugestoes(lista) {
+  
+function mostrarSugestoes(lista) {
   let listaEl = document.getElementById("lista-cidades");
 
   const input = document.getElementById("cidade");
-  if (!input) return; 
+  if (!input) return;
 
-const rect = input.getBoundingClientRect();
+  const rect = input.getBoundingClientRect();
 
   if (!listaEl) {
     listaEl = document.createElement("div");
     listaEl.id = "lista-cidades";
 
+    // 🔥 POSIÇÃO
     listaEl.style.position = "fixed";
+
+    // 🎨 ESTILO (com cor da paleta)
     listaEl.style.borderRadius = "12px";
     listaEl.style.boxShadow = "0 10px 30px rgba(0,0,0,0.1)";
     listaEl.style.fontSize = "14px";
     listaEl.style.background = "#fff";
     listaEl.style.maxHeight = "150px";
     listaEl.style.overflowY = "auto";
-    listaEl.style.border = "1px solid #ccc";
+
+    // 💜 BORDA NA COR DO APP
+    listaEl.style.border = "1px solid #7c3aed";
+
     listaEl.style.zIndex = "999";
     listaEl.style.backdropFilter = "blur(10px)";
 
@@ -1404,7 +1410,7 @@ const rect = input.getBoundingClientRect();
     }
   }
 
-  
+  // 📍 POSICIONAMENTO (CORRIGIDO)
   listaEl.style.left = rect.left + "px";
 
   const margem = 16;
@@ -1416,11 +1422,13 @@ const rect = input.getBoundingClientRect();
 
   listaEl.style.width = largura + "px";
 
-  // 🔥 abre pra cima
-  listaEl.style.bottom = (window.innerHeight - rect.top) + "px";
+  // 🔥 POSICIONA ACIMA DO INPUT (SEM CONFLITO)
+  listaEl.style.top = (rect.top - 160) + "px";
 
+  // 🔄 LIMPA LISTA
   listaEl.innerHTML = "";
 
+  // 🧠 RENDERIZA ITENS
   lista.forEach(cidade => {
     const item = document.createElement("div");
     item.textContent = cidade;
@@ -1430,7 +1438,7 @@ const rect = input.getBoundingClientRect();
     item.style.cursor = "pointer";
 
     item.addEventListener("touchstart", () => {
-      item.style.background = "#f5f5f5";
+      item.style.background = "#f3f0ff"; // lilás leve
     });
 
     item.addEventListener("touchend", () => {
@@ -1444,7 +1452,8 @@ const rect = input.getBoundingClientRect();
 
     listaEl.appendChild(item);
   });
-    }
+}
+  
   
   async function buscarTotalAssinaturas() {
   const { count, error } = await supabase
