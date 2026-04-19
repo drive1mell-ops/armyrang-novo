@@ -1316,6 +1316,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   document.getElementById('submit-btn').addEventListener('click', async () => {
+  await enviarFormulario();
+});
 
   const nomeInput   = document.getElementById("input-name");
   const emailInput  = document.getElementById("input-email");
