@@ -1441,6 +1441,8 @@ document.getElementById("cidade").addEventListener("input", function () {
     updateCounter(refs);
   
   }
+
+  }
   
   document.getElementById('submit-btn').addEventListener('click', async () => {
     
@@ -1486,7 +1488,7 @@ if (!estadoSelect.value) {
 }
 
 // CIDADE
-if (!cidadeSelect.value) {
+if (!document.getElementById("cidade").value.trim()) {
   errorCidade.classList.add("visible");
   temErro = true;
 }
@@ -1494,7 +1496,7 @@ if (!cidadeSelect.value) {
 if (temErro) {
   mostrarToast("Preencha os campos obrigatórios corretamente");
 
-  const primeiroErro = document.querySelector(".invalid, .visible");
+  const primeiroErro = document.querySelector(".visible");
   if (primeiroErro) {
     primeiroErro.scrollIntoView({ behavior: "smooth", block: "center" });
   }
