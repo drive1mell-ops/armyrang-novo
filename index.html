@@ -1448,8 +1448,9 @@ if (temErro) return;
       .select();
 
     if (error) {
-      mostrarToast("Erro ao enviar. Tente novamente.");
-      return;
+  console.log(error); // mantém pra debug
+  openModal(); // continua o fluxo mesmo assim
+  return;
     }
 
     openModal(data[0].id);
@@ -1459,7 +1460,7 @@ if (temErro) return;
     const btn    = document.getElementById('modal-share-btn');
     const numero = Number(document.getElementById('modal-num').textContent);
 
-    const mensagem = `*Hey, ARMY! 💜*\nEu sou a assinatura nº ${numero.toLocaleString("pt-BR")} do Armyrang\nO Brasil precisa de mais datas de shows!\nAssine você também!👇`;
+    const mensagem = `*Hey, ARMY! *\nEu sou a assinatura nº ${numero.toLocaleString("pt-BR")} do Armyrang 💜\nO Brasil precisa de mais datas de shows!\nAssine você também!👇`;
 
     const url = 'https://armyrang.com.br';
 
