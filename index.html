@@ -1374,7 +1374,9 @@ document.getElementById("cidade").addEventListener("input", function () {
   let listaEl = document.getElementById("lista-cidades");
 
   const input = document.getElementById("cidade");
-  const rect = input.getBoundingClientRect();
+  if (!input) return; 
+
+const rect = input.getBoundingClientRect();
 
   if (!listaEl) {
     listaEl = document.createElement("div");
