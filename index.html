@@ -1238,6 +1238,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const splash = document.getElementById("splash");
 const second = document.getElementById("second");
+  history.pushState({ tela: "form" }, "", "#form");
+  
   
 if (window.location.hash === "#form") {
   if (splash && second) {
