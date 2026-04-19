@@ -1446,9 +1446,8 @@ function mostrarSugestoes(lista) {
 
   // 🔥 POSICIONA EXATAMENTE ACIMA DO INPUT
   listaEl.style.top =
+  rect.top + window.scrollY - listaEl.offsetHeight - 6 + "px";
 
-    rect.top + window.scrollY - listaEl.offsetHeight - 6 + "px";
-});
 }
 
   async function buscarTotalAssinaturas() {
