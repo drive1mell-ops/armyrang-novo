@@ -1472,10 +1472,28 @@ if (temErro) {
   console.log(e);
   openModal(); // mesmo com erro, continua fluxo
 }
+
+  });
+function limparFormulario() {
+
+  document.getElementById("input-name").value = "";
+  document.getElementById("input-email").value = "";
+  document.getElementById("cidade").value = "";
+
+  document.getElementById("estado").value = "";
+  document.getElementById("cidade").disabled = true;
+
+  document.querySelectorAll('.option-pill.selected').forEach(p => {
+    p.classList.remove('selected');
+  });
+
+  document.querySelectorAll('.visible').forEach(el => {
+    el.classList.remove('visible');
+  });
+
+}
     
 
-    
-  });
 
   document.getElementById('modal-share-btn').addEventListener('click', async () => {
     const btn    = document.getElementById('modal-share-btn');
@@ -1499,6 +1517,20 @@ if (temErro) {
       }
     }
   });
+  window.onpopstate = function () {
+  const modalOverlay = document.getElementById('modal-overlay');
+  const second = document.getElementById("second");
+
+  if (modalOverlay && modalOverlay.classList.contains("visible")) {
+    modalOverlay.classList.remove("visible");
+
+    if (second) {
+      second.classList.remove("hidden");
+    }
+
+    limparFormulario();
+  }
+};
 
 });
  </script>
