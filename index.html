@@ -1445,9 +1445,10 @@ function mostrarSugestoes(lista) {
   listaEl.style.left = left + "px";
 
   // 🔥 POSICIONA EXATAMENTE ACIMA DO INPUT
-  listaEl.style.top =
-  rect.top + window.scrollY - listaEl.offsetHeight - 6 + "px";
+  const altura = Math.min(listaEl.scrollHeight, 150);
 
+listaEl.style.top =
+  rect.top + window.scrollY - altura - 6 + "px";
 }
 
   async function buscarTotalAssinaturas() {
