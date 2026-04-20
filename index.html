@@ -1633,20 +1633,18 @@ document.getElementById('modal-share-btn').addEventListener('click', async () =>
 });
 
   
-
 function soltarConfete() {
   confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
   confetti({ particleCount: 60, spread: 100, origin: { y: 0.6 } });
 }
 
-  function pararMusica() {
+function pararMusica() {
   const audio = document.getElementById("bg-music");
   if (audio) {
     audio.pause();
     audio.currentTime = 0;
   }
-  }
-  
+}
 
 window.onpopstate = function () {
   const modalOverlay = document.getElementById('modal-overlay');
@@ -1654,12 +1652,10 @@ window.onpopstate = function () {
   if (modalOverlay && modalOverlay.classList.contains("visible")) {
     modalOverlay.classList.remove("visible");
     limparFormulario();
-    pararMusica(); 
+    pararMusica();
   }
 };
-  
-  
-  
+
 document.addEventListener("click", function (e) {
   const modal = document.getElementById("modal-overlay");
 
@@ -1667,10 +1663,11 @@ document.addEventListener("click", function (e) {
     if (e.target.id === "modal-overlay") {
       modal.classList.remove("visible");
       limparFormulario();
-      pararMusica(); 
+      pararMusica();
     }
   }
 });
+  
 
 </script>
 
