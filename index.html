@@ -1289,8 +1289,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function openModal(total) {
     const modalNum = document.getElementById('modal-num');
 
-    if (modalNum && total) {
-      modalNum.textContent = total.toLocaleString('pt-BR');
+    if (modalNum && typeof total === "number") {
+  modalNum.textContent = total.toLocaleString('pt-BR');
     }
 
     const modalOverlay = document.getElementById('modal-overlay');
@@ -1650,29 +1650,26 @@ function pararMusica() {
   }
 }
 
-window.onpopstate = function (event) {
+window.onpopstate = function () {
   const splash = document.getElementById('splash');
   const second = document.getElementById('second');
   const modal = document.getElementById('modal-overlay');
 
-  const tela = event.state?.tela;
-
-  if (tela === "modal") {
-    modal.classList.add("visible");
+  // 1. fecha modal primeiro
+  if (modal && modal.classList.contains("visible")) {
+    modal.classList.remove("visible");
+    limparFormulario();
+    pararMusica();
     return;
   }
 
-  if (tela === "second") {
-    splash.classList.add("hidden");
-    second.classList.remove("hidden");
+  // 2. volta do form pra splash
+  if (second && !second.classList.contains("hidden")) {
+    second.classList.add("hidden");
+    splash.classList.remove("hidden");
+    pararMusica();
     return;
   }
-
-  // fallback → splash
-  splash.classList.remove("hidden");
-  second.classList.add("hidden");
-  modal.classList.remove("visible");
-  pararMusica();
 };
 
   
