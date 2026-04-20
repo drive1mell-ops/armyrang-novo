@@ -912,7 +912,7 @@
 
       <p class="splash-supporting">Assine e ajude a mostrar a força da ARMY brasileiro</p>
 
-<button id="btn-assinar" class="btn-primary" onclick="
+<button class="btn-primary" onclick="
   document.getElementById('splash').classList.add('hidden');
   document.getElementById('second').classList.remove('hidden');
 ">
@@ -1626,18 +1626,15 @@ function limparFormulario() {
   }
 }
 
-// 👇 AGORA SIM começa o window
 window.onpopstate = function () {
   const modalOverlay = document.getElementById('modal-overlay');
 
   if (modalOverlay && modalOverlay.classList.contains("visible")) {
     modalOverlay.classList.remove("visible");
     limparFormulario();
-  });
-}
-
+  }
+};
 </script>
-
 
 <div id="toast" class="toast"></div>
 
