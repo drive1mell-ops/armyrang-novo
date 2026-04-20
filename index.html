@@ -912,7 +912,7 @@
 
       <p class="splash-supporting">Assine e ajude a mostrar a força da ARMY brasileiro</p>
 
-<button class="btn-primary" onclick="
+<button id="btn-assinar" class="btn-primary" onclick="
   document.getElementById('splash').classList.add('hidden');
   document.getElementById('second').classList.remove('hidden');
 ">
@@ -1633,26 +1633,24 @@ function limparFormulario() {
   if (modalOverlay && modalOverlay.classList.contains("visible")) {
     modalOverlay.classList.remove("visible");
     limparFormulario();
-  }
-};
-
-// 🎵 iniciar música
-function iniciarMusica() {
-  const player = document.getElementById("yt-player");
-
-  if (player && !player.src.includes("autoplay=1")) {
-    player.src = player.src.replace("mute=1", "mute=0") + "&autoplay=1";
-  }
-
-  document.removeEventListener("click", iniciarMusica);
-  document.removeEventListener("scroll", iniciarMusica);
-  document.removeEventListener("touchstart", iniciarMusica);
+  
 }
+};
+                                                                                      
 
-// 👇 qualquer interação inicia
-document.addEventListener("click", iniciarMusica);
-document.addEventListener("scroll", iniciarMusica);
-document.addEventListener("touchstart", iniciarMusica);
+// 🎵 tocar música ao clicar no botão ASSINAR
+const botaoAssinar = document.getElementById("btn-assinar");
+
+if (botaoAssinar) {
+  botaoAssinar.addEventListener("click", function () {
+    const player = document.getElementById("yt-player");
+
+    if (player && !player.src.includes("autoplay=1")) {
+      player.src = "https://www.youtube.com/embed/Fw7C6IsDYgI?autoplay=1&mute=0&controls=0";
+    }
+  });
+}
+  
 </script>
 
 <!-- 🎵 PLAYER INVISÍVEL -->
@@ -1660,7 +1658,7 @@ document.addEventListener("touchstart", iniciarMusica);
   id="yt-player"
   width="0"
   height="0"
-  src="https://www.youtube.com/embed/Fw7C6IsDYgI?enablejsapi=1&controls=0&mute=1"
+  src="https://www.youtube.com/embed/Fw7C6IsDYgI?controls=0"
   frameborder="0"
   allow="autoplay; encrypted-media"
 ></iframe>
