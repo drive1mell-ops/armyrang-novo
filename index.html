@@ -1593,22 +1593,45 @@ if (temErro) {
     
 function limparFormulario() {
 
-  document.getElementById("input-name").value = "";
-  document.getElementById("input-email").value = "";
-  document.getElementById("cidade").value = "";
+  const nome = document.getElementById("input-name");
+  const email = document.getElementById("input-email");
+  const estado = document.getElementById("estado");
+  const cidade = document.getElementById("cidade");
 
-  document.getElementById("estado").value = "";
-  document.getElementById("cidade").disabled = true;
+  // 🔹 limpar valores
+  if (nome) nome.value = "";
+  if (email) email.value = "";
+  if (cidade) cidade.value = "";
 
+  // 🔹 reset estado (select)
+  if (estado) {
+    estado.value = "";
+    estado.selectedIndex = 0;
+    estado.classList.add("placeholder");
+  }
+
+  // 🔹 reset cidade (input custom)
+  if (cidade) {
+    cidade.value = "";
+    cidade.classList.add("placeholder");
+    cidade.disabled = true;
+  }
+
+  // 🔹 limpar sugestões (se existir)
+  const lista = document.getElementById("lista-cidades");
+  if (lista) lista.remove();
+
+  // 🔹 reset pills (opções)
   document.querySelectorAll('.option-pill.selected').forEach(p => {
     p.classList.remove('selected');
   });
 
+  // 🔹 limpar erros visuais
   document.querySelectorAll('.visible').forEach(el => {
     el.classList.remove('visible');
   });
 
-}
+    }
     
 document.getElementById('modal-share-btn').addEventListener('click', async () => {
   const btn    = document.getElementById('modal-share-btn');
