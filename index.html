@@ -915,12 +915,6 @@
 <button class="btn-primary" onclick="
   document.getElementById('splash').classList.add('hidden');
   document.getElementById('second').classList.remove('hidden');
-
-  const audio = document.getElementById('bg-music');
-  if (audio && audio.paused) {
-    audio.volume = 0.3;
-    audio.play().catch(() => {});
-  }
 ">
   ASSINAR
 </button>
@@ -1639,7 +1633,6 @@ function soltarConfete() {
   confetti({ particleCount: 60, spread: 100, origin: { y: 0.6 } });
 }
 
-};
   
 
 window.onpopstate = function () {
