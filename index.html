@@ -1632,19 +1632,16 @@ document.getElementById('modal-share-btn').addEventListener('click', async () =>
   }
 });
 
-  // outras funções...
+  
 
 function soltarConfete() {
   confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
   confetti({ particleCount: 60, spread: 100, origin: { y: 0.6 } });
 }
 
-// depois continua seu código normal
-window.onpopstate = function () {
-  ...
 };
   
-// 👇 fora do evento
+
 window.onpopstate = function () {
   const modalOverlay = document.getElementById('modal-overlay');
 
