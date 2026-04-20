@@ -1688,9 +1688,11 @@ document.addEventListener("click", function (e) {
 
   if (modal && modal.classList.contains("visible")) {
     if (e.target.id === "modal-overlay") {
-      modal.classList.remove("visible");
-      limparFormulario();
-      pararMusica();
+
+      limparFormulario();   // mantém
+      pararMusica();        // mantém
+
+      history.back();       // 🔥 ESSENCIAL (novo)
     }
   }
 });
