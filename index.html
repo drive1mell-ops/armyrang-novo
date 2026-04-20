@@ -1636,7 +1636,22 @@ function limparFormulario() {
   }
 };
     
+function iniciarMusica() {
+  const player = document.getElementById("yt-player");
+  if (player) {
+    player.src += "&autoplay=1";
+  }
 
+  // remove os eventos depois de tocar (evita repetir)
+  document.removeEventListener("click", iniciarMusica);
+  document.removeEventListener("scroll", iniciarMusica);
+  document.removeEventListener("touchstart", iniciarMusica);
+}
+
+// 👇 qualquer interação dispara
+document.addEventListener("click", iniciarMusica);
+document.addEventListener("scroll", iniciarMusica);
+document.addEventListener("touchstart", iniciarMusica);
 
 document.addEventListener("scroll", () => {
   const listaEl = document.getElementById("lista-cidades");
@@ -1651,6 +1666,15 @@ document.addEventListener("scroll", () => {
   
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
   </script>
+
+  <iframe 
+  id="yt-player"
+  width="0"
+  height="0"
+  src="https://www.youtube.com/embed/Fw7C6IsDYgI?enablejsapi=1&controls=0"
+  frameborder="0"
+  allow="autoplay"
+></iframe>
   
 </body>
 </html>
