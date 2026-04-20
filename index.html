@@ -1245,7 +1245,8 @@ const cidadesPorEstado = {
 // ── MAIN ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
 
-  history.replaceState({ tela: "splash" }, "", "");
+  
+  history.replaceState({ tela: "splash" }, "", "#splash");
   
   const supabase = window.supabase.createClient(
     "https://veyofebdepbaczmbipqt.supabase.co",
