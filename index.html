@@ -1693,18 +1693,19 @@ document.addEventListener("click", function (e) {
     // 👉 clicou fora da caixa (fundo escuro)
     if (!modalBox.contains(e.target)) {
 
-      modal.classList.remove("visible"); // fecha visualmente
+  modal.classList.remove("visible");
 
-      limparFormulario();  // limpa form
-      pararMusica();       // para música
+  // 👇 controla direto
+  const second = document.getElementById("second");
 
-      history.back();      // volta histórico
+  if (second) second.classList.remove("hidden");
+
+  limparFormulario();
+  pararMusica();
     }
-  }
+
+    }
 });
-
-
-  
 
  
 
