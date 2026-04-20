@@ -1638,26 +1638,15 @@ function limparFormulario() {
     
 function iniciarMusica() {
   const player = document.getElementById("yt-player");
+
   if (player) {
-    player.src += "&autoplay=1";
+    player.src = player.src.replace("mute=1", "mute=0") + "&autoplay=1";
   }
 
-  // remove os eventos depois de tocar (evita repetir)
   document.removeEventListener("click", iniciarMusica);
   document.removeEventListener("scroll", iniciarMusica);
   document.removeEventListener("touchstart", iniciarMusica);
 }
-
-// 👇 qualquer interação dispara
-document.addEventListener("click", iniciarMusica);
-document.addEventListener("scroll", iniciarMusica);
-document.addEventListener("touchstart", iniciarMusica);
-
-document.addEventListener("scroll", () => {
-  const listaEl = document.getElementById("lista-cidades");
-  if (listaEl) listaEl.remove();
-}, true);
-});
   
     
  </script>
