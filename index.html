@@ -1582,12 +1582,12 @@ if (temErro) {
 
   await buscarTotalAssinaturas();
   openModal(valorAtualAssinaturas);
-  soltarConfete()   
+  soltarConfete();  
   } 
     catch (e) {
   console.log(e);
   openModal(valorAtualAssinaturas);
-  soltarConfete()   
+  soltarConfete();   
  } 
 
 });
@@ -1630,7 +1630,7 @@ document.getElementById('modal-share-btn').addEventListener('click', async () =>
       setTimeout(() => btn.textContent = 'Compartilhar', 3000);
     } catch (e) {
       btn.textContent = 'Erro ao copiar';
-  }
+    }
   }
 });
 
