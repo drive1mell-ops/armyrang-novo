@@ -1501,14 +1501,6 @@ listaEl.style.top =
   
   document.getElementById('submit-btn').addEventListener('click', async () => {
 
-  // 🎵 música
-  const audio = document.getElementById('bg-music');
-  if (audio && audio.paused) {
-    audio.volume = 0.2;
-    audio.play().catch(() => {});
-  }
-    
-
 const nomeInput   = document.getElementById("input-name");
 const emailInput  = document.getElementById("input-email");
 
@@ -1583,12 +1575,19 @@ if (temErro) {
   await buscarTotalAssinaturas();
   openModal(valorAtualAssinaturas);
   soltarConfete();  
-  } 
-    catch (e) {
+
+  const audio = document.getElementById('bg-music');
+  if (audio) {
+    audio.volume = 0.2;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }
+
+} catch (e) {
   console.log(e);
   openModal(valorAtualAssinaturas);
   soltarConfete();   
- } 
+    }
 
 });
     
