@@ -1642,6 +1642,8 @@ function soltarConfete() {
   
 
 window.onpopstate = function () {
+// 👇 VOLTA NORMAL
+window.onpopstate = function () {
   const modalOverlay = document.getElementById('modal-overlay');
 
   if (modalOverlay && modalOverlay.classList.contains("visible")) {
@@ -1649,7 +1651,21 @@ window.onpopstate = function () {
     limparFormulario();
   }
 };
-});  
+
+// 👇 EVENTO DE CLICK (FORA DO WINDOW)
+document.addEventListener("click", function (e) {
+  const modal = document.getElementById("modal-overlay");
+
+  if (modal && modal.classList.contains("visible")) {
+    // fecha só se clicar no fundo
+    if (e.target.id === "modal-overlay") {
+      modal.classList.remove("visible");
+      limparFormulario();
+    }
+  }
+});
+
+    
 </script>
 
 
