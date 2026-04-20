@@ -1613,28 +1613,29 @@ function limparFormulario() {
     const url = 'https://armyrang.com.br';
 
     if (navigator.share) {
-      try {
-        await navigator.share({ title: 'Armyrang', text: mensagem, url });
-      } catch (e) {}
-    } else {
-      try {
-        await navigator.clipboard.writeText(mensagem + '\n' + url);
-        btn.textContent = 'Link copiado!';
-        setTimeout(() => btn.textContent = 'Compartilhar', 3000);
-      } catch (e) {
-        btn.textContent = 'Erro ao copiar';
-      }
-    }
-  });
-    
-  window.onpopstate = function () {
+  try {
+    await navigator.share({ title: 'Armyrang', text: mensagem, url });
+  } catch (e) {}
+} else {
+  try {
+    await navigator.clipboard.writeText(mensagem + '\n' + url);
+    btn.textContent = 'Link copiado!';
+    setTimeout(() => btn.textContent = 'Compartilhar', 3000);
+  } catch (e) {
+    btn.textContent = 'Erro ao copiar';
+  }
+} // 👈 fecha o IF
+
+}); // 👈 aqui fecha o addEventListener
+
+// 👇 AGORA SIM começa o window
+window.onpopstate = function () {
   const modalOverlay = document.getElementById('modal-overlay');
 
   if (modalOverlay && modalOverlay.classList.contains("visible")) {
     modalOverlay.classList.remove("visible");
     limparFormulario();
-  
-}
+  }
 };
                                                                                       
 
