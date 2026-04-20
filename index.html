@@ -1668,19 +1668,21 @@ function pararMusica() {
     audio.currentTime = 0;
   }
 }
-});
 
-
-
-window.addEventListener("popstate", function () {
+  function fecharModal() {
   const modal = document.getElementById("modal-overlay");
 
-  if (modal && modal.classList.contains("visible")) {
+  if (modal) {
     modal.classList.remove("visible");
-    limparFormulario();
-    pararMusica();
   }
-});
+
+  limparFormulario();
+  pararMusica();
+  }
+
+
+
+
 
 
 
@@ -1690,16 +1692,11 @@ if (modal) {
   modal.addEventListener("click", function (e) {
 
     if (e.target === modal) {
-
-      modal.classList.remove("visible");
-
-      limparFormulario();
-      pararMusica();
+      fecharModal();
     }
 
   });
 }
-
  
 
 
