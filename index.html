@@ -1631,6 +1631,18 @@ document.getElementById('modal-share-btn').addEventListener('click', async () =>
   }
 });
 
+  // outras funções...
+
+function soltarConfete() {
+  confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
+  confetti({ particleCount: 60, spread: 100, origin: { y: 0.6 } });
+}
+
+// depois continua seu código normal
+window.onpopstate = function () {
+  ...
+};
+  
 // 👇 fora do evento
 window.onpopstate = function () {
   const modalOverlay = document.getElementById('modal-overlay');
@@ -1650,6 +1662,8 @@ window.onpopstate = function () {
 <div id="toast" class="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 </body>
 </html>
