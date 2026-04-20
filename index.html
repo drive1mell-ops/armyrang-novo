@@ -1624,9 +1624,7 @@ function limparFormulario() {
   } catch (e) {
     btn.textContent = 'Erro ao copiar';
   }
-} // 👈 fecha o IF
-
-}); // 👈 aqui fecha o addEventListener
+}
 
 // 👇 AGORA SIM começa o window
 window.onpopstate = function () {
@@ -1637,7 +1635,6 @@ window.onpopstate = function () {
     limparFormulario();
   }
 };
-                                                                                      
 
 // 🎵 tocar música ao clicar no botão ASSINAR
 const botaoAssinar = document.getElementById("btn-assinar");
@@ -1651,7 +1648,7 @@ if (botaoAssinar) {
     }
   });
 }
-  
+
 </script>
 
 <!-- 🎵 PLAYER INVISÍVEL -->
