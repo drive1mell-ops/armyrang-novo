@@ -1674,6 +1674,11 @@ document.addEventListener("click", function (e) {
 
       history.back();       // 🔥 ESSENCIAL (novo)
     }
+    }
+});
+  document.addEventListener("visibilitychange", function () {
+  if (document.hidden) {
+    pararMusica();
   }
 });
   
