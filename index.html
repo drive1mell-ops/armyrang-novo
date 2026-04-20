@@ -916,7 +916,7 @@
   document.getElementById('splash').classList.add('hidden');
   document.getElementById('second').classList.remove('hidden');
 
-  history.pushState({ tela: 'second' }, '', '');
+  history.pushState({ tela: 'second' }, '', '#form');
 ">
   ASSINAR
 </button>
@@ -1650,28 +1650,30 @@ function pararMusica() {
   }
 }
 
-window.onpopstate = function () {
+window.onpopstate = function (event) {
   const splash = document.getElementById('splash');
   const second = document.getElementById('second');
   const modal = document.getElementById('modal-overlay');
 
-  // se modal estiver aberto → fecha primeiro
-  if (modal && modal.classList.contains("visible")) {
-    modal.classList.remove("visible");
-    limparFormulario();
-    pararMusica();
+  const tela = event.state?.tela;
+
+  if (tela === "modal") {
+    modal.classList.add("visible");
     return;
   }
 
-  // se estiver no form → volta pra splash
-  if (second && !second.classList.contains("hidden")) {
-    second.classList.add("hidden");
-    splash.classList.remove("hidden");
-    pararMusica();
+  if (tela === "second") {
+    splash.classList.add("hidden");
+    second.classList.remove("hidden");
     return;
   }
+
+  // fallback → splash
+  splash.classList.remove("hidden");
+  second.classList.add("hidden");
+  modal.classList.remove("visible");
+  pararMusica();
 };
-  
 
   
  
