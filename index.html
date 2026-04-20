@@ -1633,33 +1633,11 @@ window.onpopstate = function () {
   if (modalOverlay && modalOverlay.classList.contains("visible")) {
     modalOverlay.classList.remove("visible");
     limparFormulario();
-  }
-};
-
-// 🎵 tocar música ao clicar no botão ASSINAR
-const botaoAssinar = document.getElementById("btn-assinar");
-
-if (botaoAssinar) {
-  botaoAssinar.addEventListener("click", function () {
-    const player = document.getElementById("yt-player");
-
-    if (player && !player.src.includes("autoplay=1")) {
-      player.src = "https://www.youtube.com/embed/Fw7C6IsDYgI?autoplay=1&mute=0&controls=0";
-    }
   });
 }
 
 </script>
 
-<!-- 🎵 PLAYER INVISÍVEL -->
-<iframe 
-  id="yt-player"
-  width="0"
-  height="0"
-  src="https://www.youtube.com/embed/Fw7C6IsDYgI?controls=0"
-  frameborder="0"
-  allow="autoplay; encrypted-media"
-></iframe>
 
 <div id="toast" class="toast"></div>
 
