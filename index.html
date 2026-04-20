@@ -1601,27 +1601,26 @@ function limparFormulario() {
   // 🔹 limpar valores
   if (nome) nome.value = "";
   if (email) email.value = "";
-  if (cidade) cidade.value = "";
 
   // 🔹 reset estado (select)
   if (estado) {
     estado.value = "";
     estado.selectedIndex = 0;
-    estado.classList.add("placeholder");
+    syncPlaceholder(estado); // 🔥 usa seu sistema padrão
   }
 
   // 🔹 reset cidade (input custom)
   if (cidade) {
     cidade.value = "";
-    cidade.classList.add("placeholder");
     cidade.disabled = true;
+    cidade.classList.add("placeholder");
   }
 
-  // 🔹 limpar sugestões (se existir)
+  // 🔹 limpar sugestões (dropdown flutuante)
   const lista = document.getElementById("lista-cidades");
   if (lista) lista.remove();
 
-  // 🔹 reset pills (opções)
+  // 🔹 reset pills
   document.querySelectorAll('.option-pill.selected').forEach(p => {
     p.classList.remove('selected');
   });
@@ -1631,7 +1630,7 @@ function limparFormulario() {
     el.classList.remove('visible');
   });
 
-    }
+}
     
 document.getElementById('modal-share-btn').addEventListener('click', async () => {
   const btn    = document.getElementById('modal-share-btn');
