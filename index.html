@@ -1650,7 +1650,15 @@ function pararMusica() {
 
 
 
+window.addEventListener("popstate", function () {
+  const modal = document.getElementById("modal-overlay");
 
+  if (modal && modal.classList.contains("visible")) {
+    modal.classList.remove("visible");
+    limparFormulario();
+    pararMusica();
+  }
+});
 
 
 
