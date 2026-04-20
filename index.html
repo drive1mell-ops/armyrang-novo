@@ -1656,14 +1656,26 @@ window.onpopstate = function () {
   const second = document.getElementById('second');
   const modal = document.getElementById('modal-overlay');
 
-  if (modal && modal.classList.contains("visible")) {
-    modal.classList.remove("visible");
-    limparFormulario();
+  const hash = window.location.hash;
+
+  // limpa tudo
+  modal.classList.remove("visible");
+  second.classList.add("hidden");
+  splash.classList.add("hidden");
+
+  if (hash === "#modal") {
+    second.classList.remove("hidden");
+    modal.classList.add("visible");
+    return;
+  }
+
+  if (hash === "#form") {
+    second.classList.remove("hidden");
     pararMusica();
     return;
   }
 
-  second.classList.add("hidden");
+  // splash
   splash.classList.remove("hidden");
   pararMusica();
 };
