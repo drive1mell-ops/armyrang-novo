@@ -1639,33 +1639,39 @@ function soltarConfete() {
   confetti({ particleCount: 60, spread: 100, origin: { y: 0.6 } });
 }
 
+  function pararMusica() {
+  const audio = document.getElementById("bg-music");
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+  }
   
 
-window.onpopstate = function () {
-// 👇 VOLTA NORMAL
 window.onpopstate = function () {
   const modalOverlay = document.getElementById('modal-overlay');
 
   if (modalOverlay && modalOverlay.classList.contains("visible")) {
     modalOverlay.classList.remove("visible");
     limparFormulario();
+    pararMusica(); 
   }
 };
-
-// 👇 EVENTO DE CLICK (FORA DO WINDOW)
+  
+  
+  
 document.addEventListener("click", function (e) {
   const modal = document.getElementById("modal-overlay");
 
   if (modal && modal.classList.contains("visible")) {
-    // fecha só se clicar no fundo
     if (e.target.id === "modal-overlay") {
       modal.classList.remove("visible");
       limparFormulario();
+      pararMusica(); 
     }
   }
 });
 
-    
 </script>
 
 
