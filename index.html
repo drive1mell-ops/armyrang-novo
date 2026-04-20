@@ -1602,30 +1602,30 @@ function limparFormulario() {
 
 }
     
+document.getElementById('modal-share-btn').addEventListener('click', async () => {
+  const btn    = document.getElementById('modal-share-btn');
+  const numero = Number(document.getElementById('modal-num').textContent);
 
+  const mensagem = `*Hey, ARMY! 💜 *\nEu sou a assinatura nº ${numero.toLocaleString("pt-BR")} do Armyrang\nO Brasil precisa de mais datas de shows!\nAssine você também!👇`;
 
-  document.getElementById('modal-share-btn').addEventListener('click', async () => {
-    const btn    = document.getElementById('modal-share-btn');
-    const numero = Number(document.getElementById('modal-num').textContent);
+  const url = 'https://armyrang.com.br';
 
-    const mensagem = `*Hey, ARMY! 💜 *\nEu sou a assinatura nº ${numero.toLocaleString("pt-BR")} do Armyrang\nO Brasil precisa de mais datas de shows!\nAssine você também!👇`;
-
-    const url = 'https://armyrang.com.br';
-
-    if (navigator.share) {
-  try {
-    await navigator.share({ title: 'Armyrang', text: mensagem, url });
-  } catch (e) {}
-} else {
-  try {
-    await navigator.clipboard.writeText(mensagem + '\n' + url);
-    btn.textContent = 'Link copiado!';
-    setTimeout(() => btn.textContent = 'Compartilhar', 3000);
-  } catch (e) {
-    btn.textContent = 'Erro ao copiar';
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'Armyrang', text: mensagem, url });
+    } catch (e) {}
+  } else {
+    try {
+      await navigator.clipboard.writeText(mensagem + '\n' + url);
+      btn.textContent = 'Link copiado!';
+      setTimeout(() => btn.textContent = 'Compartilhar', 3000);
+    } catch (e) {
+      btn.textContent = 'Erro ao copiar';
+    }
   }
-}
+});
 
+// 👇 fora do evento
 window.onpopstate = function () {
   const modalOverlay = document.getElementById('modal-overlay');
 
@@ -1642,3 +1642,5 @@ window.onpopstate = function () {
 
 </body>
 </html>
+
+  
