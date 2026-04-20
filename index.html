@@ -916,8 +916,7 @@
   document.getElementById('splash').classList.add('hidden');
   document.getElementById('second').classList.remove('hidden');
 
-  history.pushState({ tela: 'second' }, '', '#form');
-">
+  history.replaceState({ tela: 'second' }, '', '#form');
   ASSINAR
 </button>
 
@@ -1656,7 +1655,6 @@ window.onpopstate = function () {
   const second = document.getElementById('second');
   const modal = document.getElementById('modal-overlay');
 
-  // 1. fecha modal primeiro
   if (modal && modal.classList.contains("visible")) {
     modal.classList.remove("visible");
     limparFormulario();
@@ -1664,13 +1662,9 @@ window.onpopstate = function () {
     return;
   }
 
-  // 2. volta do form pra splash
-  if (second && !second.classList.contains("hidden")) {
-    second.classList.add("hidden");
-    splash.classList.remove("hidden");
-    pararMusica();
-    return;
-  }
+  second.classList.add("hidden");
+  splash.classList.remove("hidden");
+  pararMusica();
 };
 
   
