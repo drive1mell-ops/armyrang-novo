@@ -1684,23 +1684,21 @@ window.addEventListener("popstate", function () {
 
 
 
-document.addEventListener("click", function (e) {
-  const modal = document.getElementById("modal-overlay");
+const modal = document.getElementById("modal-overlay");
 
-  // só executa se modal estiver aberto
-  if (!modal || !modal.classList.contains("visible")) return;
+if (modal) {
+  modal.addEventListener("click", function (e) {
 
-  // 👉 só fecha se clicar no FUNDO (overlay)
-  if (e.target === modal) {
+    if (e.target === modal) {
 
-    modal.classList.remove("visible");
+      modal.classList.remove("visible");
 
-    limparFormulario();
-    pararMusica();
-  }
+      limparFormulario();
+      pararMusica();
+    }
 
-    
-});
+  });
+}
 
  
 
