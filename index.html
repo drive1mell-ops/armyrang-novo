@@ -1635,11 +1635,12 @@ function limparFormulario() {
     limparFormulario();
   }
 };
-    
+
+// 🎵 iniciar música
 function iniciarMusica() {
   const player = document.getElementById("yt-player");
 
-  if (player) {
+  if (player && !player.src.includes("autoplay=1")) {
     player.src = player.src.replace("mute=1", "mute=0") + "&autoplay=1";
   }
 
@@ -1647,16 +1648,15 @@ function iniciarMusica() {
   document.removeEventListener("scroll", iniciarMusica);
   document.removeEventListener("touchstart", iniciarMusica);
 }
-  
-    
- </script>
 
-  <div id="toast" class="toast"></div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-  </script>
+// 👇 qualquer interação inicia
+document.addEventListener("click", iniciarMusica);
+document.addEventListener("scroll", iniciarMusica);
+document.addEventListener("touchstart", iniciarMusica);
+</script>
 
-  <iframe 
+<!-- 🎵 PLAYER INVISÍVEL -->
+<iframe 
   id="yt-player"
   width="0"
   height="0"
@@ -1664,10 +1664,10 @@ function iniciarMusica() {
   frameborder="0"
   allow="autoplay; encrypted-media"
 ></iframe>
-  
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </body>
 </html>
-  
-
-
-  
