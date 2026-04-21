@@ -1697,8 +1697,15 @@ if (modal) {
 
   });
 }
- 
+
+  window.addEventListener("popstate", function () {
+  const modal = document.getElementById("modal-overlay");
+
+  if (modal && modal.classList.contains("visible")) {
+    fecharModal();
+  }
 });
+
 
   
 
